@@ -9,51 +9,68 @@ export function CheckoutForm({
   submitAction: (formData: FormData) => Promise<void>;
 }) {
   const [submitting, setSubmitting] = useState(false);
+  const [shippingRate, setShippingRate] = useState<number | null>(null);
   const [, startTransition] = useTransition();
 
-  // Invisible break #1: A console error on page load.
-  // This simulates a real bug where a feature flag/config object
-  // is undefined in production. The UI renders fine because the
-  // error happens in a non-critical initialization path, but
-  // Kane's DevTools console assertion catches it.
+  // Invisible break #1: A console error that fires on page load
+  // AND continues firing every 3 seconds. This simulates a real bug
+  // where a feature flag/config object is undefined in production.
+  // The UI renders fine, but Kane's DevTools console assertion catches it.
+  // The interval ensures the error is captured in every sub-step's
+  // console capture window (Kane resets capture per sub-step).
   useEffect(() => {
-    // @ts-expect-error — simulating a missing config module
-    const config = window.__APP_CONFIG__;
-    // This throws a TypeError: Cannot read properties of undefined
-    // It logs to console.error but doesn't crash the page.
-    try {
-      const featureFlags = config.featureFlags;
-      if (featureFlags.enableNewCheckout) {
-        console.log("Using new checkout flow");
+    const logError = () => {
+      // @ts-expect-error — simulating a missing config module
+      const config = window.__APP_CONFIG__;
+      try {
+        const featureFlags = config.featureFlags;
+        if (featureFlags.enableNewCheckout) {
+          console.log("Using new checkout flow");
+        }
+      } catch (err) {
+        console.error("[Checkout] Failed to load feature flags:", err);
       }
-    } catch (err) {
-      console.error("[Checkout] Failed to load feature flags:", err);
-    }
+    };
+    logError();
+    const interval = setInterval(logError, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Invisible break #2: A silent 500 on a background API call.
+  // The checkout page fetches shipping rates on load and retries
+  // every 3 seconds. When the endpoint returns 500, the page
+  // gracefully degrades to a default flat rate. The UI looks
+  // perfect, but the network tab shows a 500, and Kane's DevTools
+  // network assertion catches it.
+  // The interval ensures the 500 is captured in every sub-step's
+  // network capture window.
+  useEffect(() => {
+    const fetchRates = () => {
+      fetch("/api/shipping-rates")
+        .then((resp) => {
+          if (!resp.ok) throw new Error(`Shipping API returned ${resp.status}`);
+          return resp.json();
+        })
+        .then((data) => {
+          setShippingRate(data.rate ?? 5.99);
+        })
+        .catch(() => {
+          // Graceful degradation — show a default rate.
+          // The error is silently swallowed, so the user never
+          // knows the shipping API is broken. But the 500 is
+          // visible in the network tab.
+          setShippingRate(5.99);
+        });
+    };
+    fetchRates();
+    const interval = setInterval(fetchRates, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
-
     const formData = new FormData(e.currentTarget);
-
-    // Fire-and-forget analytics call — invisible break #2.
-    // The /api/checkout-analytics endpoint returns 500, but
-    // we don't await this or surface errors, so the user never
-    // sees the failure. The 500 only appears in the network tab.
-    fetch("/api/checkout-analytics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        address: formData.get("address"),
-      }),
-    }).catch(() => {
-      // Silently swallowed — the bug. A real app should log this.
-    });
-
-    // Submit via server action (sets order cookie, redirects)
     startTransition(() => {
       submitAction(formData);
     });
@@ -116,6 +133,13 @@ export function CheckoutForm({
               className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 outline-none transition focus:border-emerald-500"
               placeholder="221B Baker Street, London, NW1 6XE"
             />
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3">
+            <span className="text-sm text-zinc-400">Shipping</span>
+            <span className="font-medium text-emerald-400">
+              {shippingRate !== null ? `$${shippingRate.toFixed(2)}` : "Calculating…"}
+            </span>
           </div>
 
           <button
