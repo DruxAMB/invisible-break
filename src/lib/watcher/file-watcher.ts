@@ -3,7 +3,7 @@ import { join, dirname, basename } from "path";
 import { existsSync, statSync } from "fs";
 import { KaneWatcher, RunResult } from "./kane-watcher";
 
-const PROJECT_ROOT = join(dirname(__dirname), "..", "..");
+const PROJECT_ROOT = process.cwd();
 const WATCH_DIRS = [
   join(PROJECT_ROOT, "src"),
 ];

@@ -1,26 +1,10 @@
 import { NextResponse } from "next/server";
+import { getState } from "@/lib/watcher/state-store";
 
 export const dynamic = "force-dynamic";
-
-// In-memory state for the watcher (shared across requests in dev)
-// In production, this would be a proper store.
-declare global {
-  // eslint-disable-next-line no-var
-  var __ibWatcherState: {
-    status: string;
-    lastResult: unknown;
-    progress: unknown[];
-  } | undefined;
-}
-
-if (!globalThis.__ibWatcherState) {
-  globalThis.__ibWatcherState = {
-    status: "idle",
-    lastResult: null,
-    progress: [],
-  };
-}
+export const runtime = "nodejs";
 
 export async function GET(): Promise<NextResponse> {
-  return NextResponse.json(globalThis.__ibWatcherState ?? { status: "idle" });
+  const state = getState();
+  return NextResponse.json(state);
 }

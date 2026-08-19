@@ -58,7 +58,7 @@ export type ProgressEvent = {
 const KANE_CLI_PATH =
   process.env.KANE_CLI_PATH ?? "C:\\Users\\LOYAL\\AppData\\Roaming\\npm\\kane-cli.cmd";
 
-const PROJECT_ROOT = join(dirname(__dirname), "..", "..");
+const PROJECT_ROOT = process.cwd();
 
 export class KaneWatcher extends EventEmitter {
   private process: ChildProcess | null = null;

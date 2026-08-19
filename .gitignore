@@ -45,3 +45,5 @@ AGENTS.local.md
 
 # watcher runtime output (failure reports are generated at runtime)
 /watcher-output/
+
+dev-server.log
