@@ -15,17 +15,25 @@ export default async function HomePage() {
           <Link href="/" className="text-xl font-bold tracking-tight">
             Quantum<span className="text-emerald-400">Store</span>
           </Link>
-          <Link
-            href="/cart"
-            className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
-          >
-            🛒 Cart
-            {count > 0 && (
-              <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-bold text-black">
-                {count}
-              </span>
-            )}
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+            >
+              🛡️ Verify
+            </Link>
+            <Link
+              href="/cart"
+              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+            >
+              🛒 Cart
+              {count > 0 && (
+                <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-bold text-black">
+                  {count}
+                </span>
+              )}
+            </Link>
+          </div>
         </div>
       </header>
 

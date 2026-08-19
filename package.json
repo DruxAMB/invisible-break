@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "watch": "tsx src/lib/watcher/index.ts --watch",
+    "watch:run": "tsx src/lib/watcher/index.ts --run"
   },
   "dependencies": {
     "next": "16.3.1",
@@ -21,6 +23,7 @@
     "eslint": "10.8.1",
     "eslint-config-next": "16.3.1",
     "tailwindcss": "4.3.3",
+    "tsx": "^4.23.12",
     "typescript": "7.0.2"
   }
 }
