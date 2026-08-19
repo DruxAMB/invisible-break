@@ -47,11 +47,15 @@ A screenshot test passes. Kane CLI catches both.
 
 1. **Open the store** (https://invisible-break.vercel.app) — browse products, add to cart, go to checkout. Everything looks perfect. A screenshot test would pass.
 
-2. **Open the dashboard** (https://invisible-break.vercel.app/dashboard) — click "Run Verification". Kane runs the checkout flow with DevTools assertions.
-
-3. **See the red state** — the dashboard shows two invisible breaks:
+2. **Open the dashboard** (https://invisible-break.vercel.app/dashboard) — the dashboard shows the red state from the last Kane run. Two invisible breaks are detected:
    - `http_error_response`: GET /api/shipping-rates → 500
    - `console_error`: [Checkout] Failed to load feature flags
+
+3. **See both states** — the dashboard has links to:
+   - 🔴 **Broken checkout** (`/checkout?breaks=true`) — invisible breaks active
+   - 🟢 **Fixed checkout** (`/checkout`) — breaks resolved by the agent
+   
+   Both pages look identical. The difference is invisible — only Kane CLI catches it.
 
 4. **Read the failure report** — `watcher-output/failure.md` contains the structured evidence the agent needs to fix the code.
 
