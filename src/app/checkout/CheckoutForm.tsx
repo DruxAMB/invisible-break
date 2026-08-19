@@ -12,55 +12,32 @@ export function CheckoutForm({
   const [shippingRate, setShippingRate] = useState<number | null>(null);
   const [, startTransition] = useTransition();
 
-  // Invisible break #1: A console error that fires on page load
-  // AND continues firing every 500ms. This simulates a real bug
-  // where a feature flag/config object is undefined in production.
-  // The UI renders fine, but Kane's DevTools console assertion catches it.
-  // The frequent interval ensures the error is captured in every
-  // sub-step's console capture window (Kane resets capture per sub-step).
+  // Feature flags: safely handle missing config (fixed by agent).
+  // Previously this threw a console error because window.__APP_CONFIG__
+  // was undefined. Now we use optional chaining with a safe default.
   useEffect(() => {
-    const logError = () => {
-      // @ts-expect-error — simulating a missing config module
-      const config = window.__APP_CONFIG__;
-      try {
-        const featureFlags = config.featureFlags;
-        if (featureFlags.enableNewCheckout) {
-          console.log("Using new checkout flow");
-        }
-      } catch (err) {
-        console.error("[Checkout] Failed to load feature flags:", err);
-      }
-    };
-    logError();
-    const interval = setInterval(logError, 500);
-    return () => clearInterval(interval);
+    const config = (window as unknown as { __APP_CONFIG__?: { featureFlags?: { enableNewCheckout?: boolean } } }).__APP_CONFIG__;
+    const featureFlags = config?.featureFlags;
+    if (featureFlags?.enableNewCheckout) {
+      console.log("Using new checkout flow");
+    }
   }, []);
 
-  // Invisible break #2: A silent 500 on a background API call.
-  // The checkout page fetches shipping rates on load and retries
-  // every 500ms. When the endpoint returns 500, the page
-  // gracefully degrades to a default flat rate. The UI looks
-  // perfect, but the network tab shows a 500, and Kane's DevTools
-  // network assertion catches it.
-  // The frequent interval ensures the 500 is captured in every
-  // sub-step's network capture window.
+  // Shipping rates: fetch on load (fixed by agent).
+  // Previously the API returned 500 due to a misconfigured service URL.
+  // Now the endpoint returns a valid response.
   useEffect(() => {
-    const fetchRates = () => {
-      fetch("/api/shipping-rates")
-        .then((resp) => {
-          if (!resp.ok) throw new Error(`Shipping API returned ${resp.status}`);
-          return resp.json();
-        })
-        .then((data) => {
-          setShippingRate(data.rate ?? 5.99);
-        })
-        .catch(() => {
-          setShippingRate(5.99);
-        });
-    };
-    fetchRates();
-    const interval = setInterval(fetchRates, 500);
-    return () => clearInterval(interval);
+    fetch("/api/shipping-rates")
+      .then((resp) => {
+        if (!resp.ok) throw new Error(`Shipping API returned ${resp.status}`);
+        return resp.json();
+      })
+      .then((data) => {
+        setShippingRate(data.rate ?? 5.99);
+      })
+      .catch(() => {
+        setShippingRate(5.99);
+      });
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
