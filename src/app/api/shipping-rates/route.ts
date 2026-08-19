@@ -1,13 +1,22 @@
 import { NextResponse } from "next/server";
 
-// Shipping rates endpoint (fixed by agent).
-// Previously this returned 500 because the shipping service URL was
-// misconfigured. Now we return a valid flat rate directly, with an
-// optional upstream fetch if SHIPPING_SERVICE_URL is set.
-export async function GET(): Promise<NextResponse> {
+// Shipping rates endpoint.
+// Supports ?broken=1 to reproduce the original invisible break (500).
+// Without the flag, returns a valid shipping rate.
+export async function GET(request: Request): Promise<NextResponse> {
+  const url = new URL(request.url);
+  const broken = url.searchParams.get("broken") === "1";
+
+  if (broken) {
+    // Reproduce the original invisible break: 500 from misconfigured service
+    return NextResponse.json(
+      { error: "Failed to connect to shipping service", endpoint: "http://localhost:9998/rates" },
+      { status: 500 }
+    );
+  }
+
   const shippingUrl = process.env.SHIPPING_SERVICE_URL;
 
-  // If a real shipping service is configured, try to use it.
   if (shippingUrl) {
     try {
       const resp = await fetch(shippingUrl, {
@@ -22,7 +31,6 @@ export async function GET(): Promise<NextResponse> {
     }
   }
 
-  // Default flat rate (no external service needed).
   return NextResponse.json({
     rate: 5.99,
     currency: "USD",

@@ -302,6 +302,29 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* Demo controls — toggle between broken and fixed states */}
+        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+          <h3 className="mb-3 text-sm font-semibold text-zinc-300">Demo: see the invisible breaks</h3>
+          <p className="mb-4 text-sm text-zinc-400">
+            The checkout page looks identical in both states. The difference is invisible —
+            console errors and 500 responses that only Kane CLI catches.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/checkout?breaks=true"
+              className="rounded-lg border border-red-800 bg-red-950/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-950/50"
+            >
+              🔴 Broken checkout (breaks enabled)
+            </a>
+            <a
+              href="/checkout"
+              className="rounded-lg border border-emerald-800 bg-emerald-950/30 px-4 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-950/50"
+            >
+              🟢 Fixed checkout (breaks resolved)
+            </a>
+          </div>
+        </div>
+
         {/* Architecture diagram */}
         <div className="mt-12 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
           <h3 className="mb-4 text-sm font-semibold text-zinc-300">How the loop works</h3>
