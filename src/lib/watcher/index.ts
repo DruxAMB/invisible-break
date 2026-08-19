@@ -15,6 +15,7 @@ import { KaneWatcher } from "./kane-watcher";
 
 const args = process.argv.slice(2);
 const watchMode = args.includes("--watch");
+const freshMode = args.includes("--fresh");
 const runOnce = args.includes("--run") || !watchMode;
 
 async function main() {
@@ -24,6 +25,7 @@ async function main() {
 
   if (watchMode) {
     const fileWatcher = new FileWatcher({
+      fresh: freshMode,
       onResult: (result) => {
         console.log(`\n[Result] ${result.overallStatus} (${result.duration}s, ${result.creditsConsumed.toFixed(2)} credits)`);
         if (result.bugVerdict) {
@@ -48,7 +50,7 @@ async function main() {
     await fileWatcher.triggerRun();
     console.log("[Watcher] Now watching for file changes. Press Ctrl+C to stop.\n");
   } else if (runOnce) {
-    const kane = new KaneWatcher();
+    const kane = new KaneWatcher({ fresh: freshMode });
     console.log("[Watcher] Running Kane verification...");
     const result = await kane.run();
 

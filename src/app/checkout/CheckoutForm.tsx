@@ -13,11 +13,11 @@ export function CheckoutForm({
   const [, startTransition] = useTransition();
 
   // Invisible break #1: A console error that fires on page load
-  // AND continues firing every 3 seconds. This simulates a real bug
+  // AND continues firing every 500ms. This simulates a real bug
   // where a feature flag/config object is undefined in production.
   // The UI renders fine, but Kane's DevTools console assertion catches it.
-  // The interval ensures the error is captured in every sub-step's
-  // console capture window (Kane resets capture per sub-step).
+  // The frequent interval ensures the error is captured in every
+  // sub-step's console capture window (Kane resets capture per sub-step).
   useEffect(() => {
     const logError = () => {
       // @ts-expect-error — simulating a missing config module
@@ -32,18 +32,18 @@ export function CheckoutForm({
       }
     };
     logError();
-    const interval = setInterval(logError, 3000);
+    const interval = setInterval(logError, 500);
     return () => clearInterval(interval);
   }, []);
 
   // Invisible break #2: A silent 500 on a background API call.
   // The checkout page fetches shipping rates on load and retries
-  // every 3 seconds. When the endpoint returns 500, the page
+  // every 500ms. When the endpoint returns 500, the page
   // gracefully degrades to a default flat rate. The UI looks
   // perfect, but the network tab shows a 500, and Kane's DevTools
   // network assertion catches it.
-  // The interval ensures the 500 is captured in every sub-step's
-  // network capture window.
+  // The frequent interval ensures the 500 is captured in every
+  // sub-step's network capture window.
   useEffect(() => {
     const fetchRates = () => {
       fetch("/api/shipping-rates")
@@ -55,15 +55,11 @@ export function CheckoutForm({
           setShippingRate(data.rate ?? 5.99);
         })
         .catch(() => {
-          // Graceful degradation — show a default rate.
-          // The error is silently swallowed, so the user never
-          // knows the shipping API is broken. But the 500 is
-          // visible in the network tab.
           setShippingRate(5.99);
         });
     };
     fetchRates();
-    const interval = setInterval(fetchRates, 3000);
+    const interval = setInterval(fetchRates, 500);
     return () => clearInterval(interval);
   }, []);
 

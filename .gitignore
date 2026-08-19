@@ -42,3 +42,6 @@ next-env.d.ts
 
 AGENTS.local.md
 .vercel
+
+# watcher runtime output (failure reports are generated at runtime)
+/watcher-output/

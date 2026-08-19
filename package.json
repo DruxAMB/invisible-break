@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "watch": "tsx src/lib/watcher/index.ts --watch",
-    "watch:run": "tsx src/lib/watcher/index.ts --run"
+    "watch:run": "tsx src/lib/watcher/index.ts --run",
+    "watch:fresh": "tsx src/lib/watcher/index.ts --run --fresh"
   },
   "dependencies": {
     "next": "16.3.1",

@@ -22,8 +22,9 @@ export class FileWatcher {
   constructor(opts: {
     onResult?: (result: RunResult) => void;
     onStatus?: (status: string) => void;
+    fresh?: boolean;
   } = {}) {
-    this.kaneWatcher = new KaneWatcher();
+    this.kaneWatcher = new KaneWatcher({ fresh: opts.fresh ?? false });
     this.onResult = opts.onResult;
     this.onStatus = opts.onStatus;
   }

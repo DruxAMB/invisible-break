@@ -1,5 +1,5 @@
 import { spawn, ChildProcess } from "child_process";
-import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync, readFileSync, rmSync } from "fs";
 import { join, dirname } from "path";
 import { EventEmitter } from "events";
 
@@ -67,16 +67,19 @@ export class KaneWatcher extends EventEmitter {
   private testFile: string;
   private appUrl: string;
   private headless: boolean;
+  private fresh: boolean;
 
   constructor(opts: {
     testFile?: string;
     appUrl?: string;
     headless?: boolean;
+    fresh?: boolean;
   } = {}) {
     super();
     this.testFile = opts.testFile ?? "kane-tests/checkout_flow_test.md";
     this.appUrl = opts.appUrl ?? "http://localhost:3000";
     this.headless = opts.headless ?? true;
+    this.fresh = opts.fresh ?? false;
   }
 
   get status(): RunStatus {
@@ -107,6 +110,16 @@ export class KaneWatcher extends EventEmitter {
 
     // Update the test file's app_url variable
     this.updateTestUrl(testPath, this.appUrl);
+
+    // Only clear cached recordings when --fresh is requested.
+    // Replays are free and deterministic; fresh authoring runs
+    // cost credits and are non-deterministic (Kane's LLM may
+    // or may not catch the breaks on any given run).
+    // The committed recordings already capture the red state;
+    // replays reproduce it reliably at zero cost.
+    if (this.fresh) {
+      this.clearOutputDir();
+    }
 
     return new Promise<RunResult>((resolve, reject) => {
       const args = [
@@ -229,6 +242,44 @@ export class KaneWatcher extends EventEmitter {
           if (event.session_dir) {
             evidencePath = event.session_dir;
           }
+          // Extract evidence lines from the run_end summary.
+          // Kane embeds evidence: lines in the summary field when
+          // the run fails with confirmed product bugs.
+          if (event.summary && typeof event.summary === "string") {
+            const evidenceLines = event.summary.match(/evidence:\s*[^\n]+/g);
+            if (evidenceLines && bugVerdict) {
+              for (const line of evidenceLines) {
+                const cleaned = line.replace(/^evidence:\s*/, "");
+                // Only add if not already in signals
+                const exists = bugVerdict.signals.some(
+                  (s) => s.excerpt === cleaned
+                );
+                if (!exists) {
+                  let type: FailureEvidence["type"] = "console_error";
+                  if (cleaned.includes("http_error_response") || cleaned.includes("500")) {
+                    type = "http_error_response";
+                  } else if (cleaned.includes("network")) {
+                    type = "network_error";
+                  }
+                  bugVerdict.signals.push({
+                    type,
+                    excerpt: cleaned,
+                  });
+                }
+              }
+            }
+            // Fill in root_cause and suggestion from the summary
+            // if the bug_verdict event didn't include them.
+            if (bugVerdict) {
+              if (!bugVerdict.root_cause) {
+                const causeMatch = event.summary.match(/^([\s\S]+?)(?:\n|evidence:)/);
+                if (causeMatch) bugVerdict.root_cause = causeMatch[1].trim();
+              }
+              if (!bugVerdict.suggestion && event.suggestion) {
+                bugVerdict.suggestion = event.suggestion;
+              }
+            }
+          }
         }
       } catch {
         // skip non-JSON lines
@@ -268,6 +319,28 @@ export class KaneWatcher extends EventEmitter {
       `value: "${url}"`
     );
     writeFileSync(testPath, content, "utf-8");
+  }
+
+  private clearOutputDir(): void {
+    const testDir = dirname(join(PROJECT_ROOT, this.testFile));
+    const entries = existsSync(testDir)
+      ? require("fs").readdirSync(testDir)
+      : [];
+    for (const entry of entries) {
+      if (entry.startsWith("output-")) {
+        const fullPath = join(testDir, entry);
+        try {
+          rmSync(fullPath, { recursive: true, force: true });
+          this.emit("progress", {
+            type: "cache_cleared",
+            detail: `Cleared ${entry}`,
+            timestamp: new Date().toISOString(),
+          });
+        } catch {
+          // ignore
+        }
+      }
+    }
   }
 
   generateFailureReport(result: RunResult): string {
