@@ -15,7 +15,6 @@ export function CheckoutForm({
   const searchParams = useSearchParams();
   const breaksEnabled = searchParams.get("breaks") === "true";
 
-  // Feature flags: safely handle missing config.
   useEffect(() => {
     if (!breaksEnabled) {
       const config = (window as unknown as { __APP_CONFIG__?: { featureFlags?: { enableNewCheckout?: boolean } } }).__APP_CONFIG__;
@@ -43,7 +42,6 @@ export function CheckoutForm({
     return () => clearInterval(interval);
   }, [breaksEnabled]);
 
-  // Shipping rates: fetch on load.
   useEffect(() => {
     const url = breaksEnabled ? "/api/shipping-rates?broken=1" : "/api/shipping-rates";
     fetch(url)
@@ -86,13 +84,13 @@ export function CheckoutForm({
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
             >
               Verify
             </Link>
             <Link
               href="/cart"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
             >
               Cart
             </Link>
@@ -106,13 +104,15 @@ export function CheckoutForm({
         </h1>
 
         {breaksEnabled && (
-          <div className="mb-12 rounded-[20px] border border-ember-orange/40 px-6 py-4 font-times text-sm text-ember-orange">
-            Invisible breaks enabled. The page looks fine, but Kane CLI will catch
-            console errors and 500 responses.{" "}
-            <Link href="/checkout" className="text-lavender-link hover:underline">
-              Try the fixed version
-            </Link>
-            .
+          <div className="mb-12 rounded-[20px] border border-ash-gray/40 px-6 py-4">
+            <p className="font-gt-flexa text-sm font-normal text-bone-white">
+              Invisible breaks enabled. The page looks fine, but Kane CLI will catch
+              console errors and 500 responses.{" "}
+              <Link href="/checkout" className="text-lavender-link hover:underline">
+                Try the fixed version
+              </Link>
+              .
+            </p>
           </div>
         )}
 
@@ -125,7 +125,7 @@ export function CheckoutForm({
               type="text"
               name="name"
               required
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
               placeholder="Ada Lovelace"
             />
           </div>
@@ -138,7 +138,7 @@ export function CheckoutForm({
               type="email"
               name="email"
               required
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
               placeholder="ada@analytical.engine"
             />
           </div>
@@ -151,27 +151,38 @@ export function CheckoutForm({
               name="address"
               required
               rows={3}
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
               placeholder="221B Baker Street, London, NW1 6XE"
             />
           </div>
 
           <div className="flex items-center justify-between rounded-[20px] border border-ash-gray/40 px-6 py-4">
-            <span className="font-times text-sm text-ash-gray">Shipping</span>
+            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Shipping</span>
             <span className="font-gt-flexa text-base font-normal text-bone-white">
               {shippingRate !== null ? `$${shippingRate.toFixed(2)}` : "Calculating…"}
             </span>
           </div>
 
+          {/* Single ember CTA per viewport */}
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-[20px] bg-ember-orange px-6 py-2 font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
+            className="block rounded-[20px] bg-ember-orange px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
           >
             {submitting ? "Processing…" : "Complete Order"}
           </button>
         </form>
       </main>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
+        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          QuantumStore
+        </p>
+        <p className="mt-4 font-times text-sm text-ash-gray">
+          Built with an AI agent. Verified with Kane CLI.
+        </p>
+      </footer>
     </div>
   );
 }

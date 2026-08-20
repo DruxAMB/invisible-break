@@ -29,6 +29,7 @@ export default async function ConfirmationPage() {
       </header>
 
       <main className="mx-auto max-w-[1200px] px-6 py-32">
+        {/* Left-aligned, not centered */}
         <h1 className="mb-8 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
           Order Confirmed
         </h1>
@@ -36,32 +37,44 @@ export default async function ConfirmationPage() {
           Thank you, {order.name}. Your order is on its way.
         </p>
 
+        {/* Order details — GT-Flexa for labels and values, not serif */}
         <div className="max-w-md space-y-4 rounded-[20px] border border-ash-gray/40 p-6">
           <div className="flex justify-between">
-            <span className="font-times text-sm text-ash-gray">Order ID</span>
+            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Order ID</span>
             <span className="font-gt-flexa text-sm font-normal text-lavender-link">
               {order.orderId}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="font-times text-sm text-ash-gray">Email</span>
-            <span className="font-times text-sm text-bone-white">{order.email}</span>
+            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Email</span>
+            <span className="font-gt-flexa text-sm font-normal text-bone-white">{order.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-times text-sm text-ash-gray">Ship to</span>
-            <span className="max-w-[200px] truncate font-times text-sm text-bone-white">
+            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Ship to</span>
+            <span className="max-w-[200px] truncate font-gt-flexa text-sm font-normal text-bone-white">
               {order.address}
             </span>
           </div>
         </div>
 
+        {/* White ghost button — secondary action */}
         <Link
           href="/"
-          className="mt-12 inline-block rounded-[20px] border border-bone-white px-6 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:bg-bone-white/10"
+          className="mt-12 inline-block rounded-[20px] border border-bone-white px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:bg-bone-white/10"
         >
           ← Back to Store
         </Link>
       </main>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
+        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          QuantumStore
+        </p>
+        <p className="mt-4 font-times text-sm text-ash-gray">
+          Built with an AI agent. Verified with Kane CLI.
+        </p>
+      </footer>
     </div>
   );
 }

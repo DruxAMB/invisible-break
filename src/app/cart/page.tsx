@@ -18,13 +18,13 @@ export default async function CartPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
             >
               Verify
             </Link>
             <Link
               href="/cart"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
             >
               Cart{count > 0 ? ` (${count})` : ""}
             </Link>
@@ -38,13 +38,14 @@ export default async function CartPage() {
         </h1>
 
         {cart.length === 0 ? (
-          <div className="rounded-[20px] border border-ash-gray/40 p-24 text-center">
+          <div className="rounded-[20px] border border-ash-gray/40 p-24">
             <p className="mb-8 font-times text-base text-ash-gray">
               Your cart is empty.
             </p>
+            {/* Lavender outlined action — nav-level, not purchase */}
             <Link
               href="/"
-              className="inline-block rounded-[20px] bg-ember-orange px-6 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
+              className="inline-block rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
             >
               Browse Products
             </Link>
@@ -62,18 +63,19 @@ export default async function CartPage() {
                     <h3 className="font-gt-flexa text-[24px] font-normal text-bone-white">
                       {item.name}
                     </h3>
-                    <p className="font-times text-sm text-ash-gray">
+                    <p className="font-gt-flexa text-sm text-ash-gray">
                       ${item.price.toFixed(2)} × {item.quantity}
                     </p>
                   </div>
-                  <div className="font-gt-flexa text-lg font-normal text-bone-white">
+                  <div className="font-gt-flexa text-base font-normal text-bone-white">
                     ${(item.price * item.quantity).toFixed(2)}
                   </div>
+                  {/* Remove — lavender outlined, not a purchase action */}
                   <form action={removeProduct}>
                     <input type="hidden" name="productId" value={item.productId} />
                     <button
                       type="submit"
-                      className="rounded-[20px] border border-ash-gray/40 px-4 py-1.5 font-gt-flexa text-xs text-ash-gray transition hover:border-bone-white hover:text-bone-white"
+                      className="rounded-[20px] border border-lavender-link px-3 py-1 font-gt-flexa text-xs font-normal text-lavender-link transition hover:bg-lavender-link/10"
                     >
                       Remove
                     </button>
@@ -84,14 +86,15 @@ export default async function CartPage() {
 
             <div className="mt-16 flex items-center justify-between border-t border-ash-gray/20 pt-8">
               <div>
-                <p className="font-times text-sm text-ash-gray">Total</p>
+                <p className="font-gt-flexa text-sm font-normal text-ash-gray">Total</p>
                 <p className="font-gt-flexa text-[32px] font-extralight text-bone-white">
                   ${total.toFixed(2)}
                 </p>
               </div>
+              {/* Single ember CTA per viewport */}
               <Link
                 href="/checkout"
-                className="rounded-[20px] bg-ember-orange px-8 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
+                className="rounded-[20px] bg-ember-orange px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
               >
                 Checkout →
               </Link>
@@ -99,6 +102,16 @@ export default async function CartPage() {
           </>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
+        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          QuantumStore
+        </p>
+        <p className="mt-4 font-times text-sm text-ash-gray">
+          Built with an AI agent. Verified with Kane CLI.
+        </p>
+      </footer>
     </div>
   );
 }
