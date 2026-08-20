@@ -1,12 +1,34 @@
 "use client";
 
-import { useRef, Suspense } from "react";
+import { useRef, Suspense, useMemo, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment, ContactShadows } from "@react-three/drei";
+import * as THREE from "three";
 
 function Model({ url }: { url: string }) {
   const { scene } = useGLTF(url);
-  return <primitive object={scene} scale={1} />;
+
+  // Clone and normalize: center the model and scale it to fit a unit cube
+  const normalized = useMemo(() => {
+    const cloned = scene.clone(true);
+
+    // Compute bounding box
+    const box = new THREE.Box3().setFromObject(cloned);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+
+    // Find the largest dimension and scale to fit ~2 units
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = maxDim > 0 ? 2 / maxDim : 1;
+
+    // Center the model at origin
+    cloned.position.sub(center.multiplyScalar(scale));
+    cloned.scale.setScalar(scale);
+
+    return cloned;
+  }, [scene]);
+
+  return <primitive object={normalized} />;
 }
 
 function ModelLoader({ url }: { url: string }) {
@@ -14,8 +36,8 @@ function ModelLoader({ url }: { url: string }) {
     <Suspense
       fallback={
         <mesh>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="#f3e5df" wireframe />
+          <boxGeometry args={[0.5, 0.5, 0.5]} />
+          <meshStandardMaterial color="#e5e7eb" wireframe />
         </mesh>
       }
     >
