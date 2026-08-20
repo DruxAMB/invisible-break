@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import gsap from "gsap";
 import type { Product } from "@/lib/products";
 import type { Cart } from "@/lib/cart";
@@ -51,6 +52,21 @@ export function LandingClient({
   const [checkout, setCheckout] = useState<CheckoutState>({ phase: "idle" });
   const [, startTransition] = useTransition();
   const [shippingRate, setShippingRate] = useState<number | null>(null);
+  const searchParams = useSearchParams();
+
+  // If ?breaks=true is in the URL, auto-open cart with breaks enabled
+  // so dashboard "BROKEN CHECKOUT" link works
+  useEffect(() => {
+    if (searchParams.get("breaks") === "true") {
+      // Auto-add the first product so checkout form is accessible
+      if (cartState.items.length === 0) {
+        handleAddToCart(products[0].id);
+      }
+      setCartState((prev) => ({ ...prev, open: true }));
+      setCheckout({ phase: "form", breaksEnabled: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   // GSAP entrance animations
   useEffect(() => {
@@ -353,7 +369,7 @@ export function LandingClient({
                 <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
                   VIEW IN 3D
                 </span>
-                <span
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAddToCart(product.id);
@@ -361,7 +377,7 @@ export function LandingClient({
                   className="rounded-[6px] bg-buy-green px-3 py-1 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
                 >
                   ADD TO CART
-                </span>
+                </button>
               </div>
             </button>
           ))}

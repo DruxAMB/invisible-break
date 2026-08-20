@@ -7,30 +7,19 @@ export const maxDuration = 300;
 
 export async function POST(): Promise<NextResponse> {
   try {
-    // Check if Kane CLI is available before attempting to run.
-    // On Vercel/serverless, the CLI won't exist — fall back to the
-    // committed result so the dashboard still demonstrates the flow.
     const isProduction =
       process.env.VERCEL === "1" || process.env.NODE_ENV === "production";
 
     if (isProduction) {
-      // Simulate a run: set to running, then after 3s restore the
-      // committed state so judges see the full cycle on the dashboard.
-      setState({ status: "running", progress: [] });
-
-      setTimeout(() => {
-        const committed = getState();
-        // Re-read from the committed Result.md by clearing the state file
-        // so parseResultMd() kicks in on next getStatus() call.
-        try {
-          const { rmSync } = require("fs");
-          const { join } = require("path");
-          const stateFile = join(process.cwd(), "watcher-output", "state.json");
-          rmSync(stateFile, { force: true });
-        } catch {
-          // ignore
-        }
-      }, 3000);
+      // On Vercel, the Kane CLI binary doesn't exist and localhost
+      // isn't reachable. Set to "running" with a timestamp — the
+      // status endpoint will auto-transition to the committed result
+      // after 3 seconds (see status/route.ts).
+      setState({
+        status: "running",
+        progress: [],
+        updatedAt: new Date().toISOString(),
+      });
 
       return NextResponse.json({
         status: "running",
