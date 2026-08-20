@@ -347,11 +347,11 @@ export function LandingClient({
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {otherProducts.map((product) => (
-            <button
+            <div
               key={product.id}
               data-animate="card"
               onClick={() => setSelectedProduct(product)}
-              className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-3 text-left transition hover:border-ink-black"
+              className="cursor-pointer rounded-[12px] border border-pixel-gray bg-arcade-cream p-3 text-left transition hover:border-ink-black"
             >
               {/* Thumbnail — emoji placeholder on cream */}
               <div className="flex h-24 items-center justify-center rounded-[12px] bg-arcade-cream border border-pixel-gray">
@@ -379,7 +379,7 @@ export function LandingClient({
                   ADD TO CART
                 </button>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       </section>
@@ -396,7 +396,7 @@ export function LandingClient({
             </p>
             <div className="flex gap-6">
               <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
-                BUILT WITH DEVIN
+                BUILT by <a href="https://druxamb.dev" className="text-buy-green hover:underline">DruxAMB</a>
               </span>
               <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
                 VERIFIED WITH KANE

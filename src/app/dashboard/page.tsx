@@ -383,7 +383,7 @@ export default function DashboardPage() {
           </p>
           <div className="flex gap-6">
             <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
-              BUILT WITH DEVIN
+              BUILT by <a href="https://druxamb.dev" className="text-buy-green hover:underline">DruxAMB</a>
             </span>
             <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
               VERIFIED WITH KANE
