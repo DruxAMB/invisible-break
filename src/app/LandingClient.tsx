@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import gsap from "gsap";
 import type { Product } from "@/lib/products";
 import type { Cart } from "@/lib/cart";
@@ -41,6 +40,7 @@ export function LandingClient({
   initialTotal,
 }: LandingClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product>(products[0]);
   const [cartState, setCartState] = useState<CartState>({
     open: false,
     count: initialCount,
@@ -164,7 +164,6 @@ export function LandingClient({
   const handleAddToCart = (productId: string) => {
     startTransition(async () => {
       const result = await addProduct(productId);
-      // Optimistic update — find the product and add to items
       const product = products.find((p) => p.id === productId);
       if (product) {
         setCartState((prev) => {
@@ -217,7 +216,6 @@ export function LandingClient({
         email: result.email,
         address: result.address,
       });
-      // Clear cart
       setCartState((prev) => ({
         ...prev,
         count: 0,
@@ -227,8 +225,7 @@ export function LandingClient({
     });
   };
 
-  const heroProduct = products[0];
-  const otherProducts = products.slice(1);
+  const otherProducts = products.filter((p) => p.id !== selectedProduct.id);
 
   return (
     <div
@@ -245,7 +242,7 @@ export function LandingClient({
         </p>
       </div>
 
-      {/* Header Bar — cream bg, 1px black bottom border */}
+      {/* Header Bar */}
       <header
         data-animate="nav"
         className="border-b border-ink-black bg-arcade-cream px-6 py-3"
@@ -264,7 +261,6 @@ export function LandingClient({
             >
               VERIFY
             </Link>
-            {/* Bag button — opens slide-out cart */}
             <button
               onClick={() => setCartState((prev) => ({ ...prev, open: true }))}
               className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
@@ -275,130 +271,115 @@ export function LandingClient({
         </div>
       </header>
 
-      {/* Hero — single product showcase like the reference */}
+      {/* Hero — 3D viewer + product info */}
       <section
         data-animate="hero"
         className="mx-auto mt-[44px] w-full max-w-[1200px] px-6"
       >
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[55%_1fr]">
-          {/* Left — 3D viewer placeholder with checkerboard */}
-          <div className="relative flex min-h-[400px] items-center justify-center overflow-hidden rounded-[12px] border border-ink-black checkerboard">
-            {/* 3D placeholder — replace with actual 3D model later */}
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-[100px] leading-none drop-shadow-[0_4px_0_#333]">
-                {heroProduct.emoji}
-              </span>
-              <p className="rounded-[6px] border border-ink-black bg-arcade-cream px-2 py-0.5 text-[10px] font-normal leading-[1.5] text-ink-black">
-                LOADING 3D MODEL...
-              </p>
-            </div>
-            {/* 3D / AR pill toggles */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-              <div className="flex gap-2">
-                <span className="rounded-[6px] border border-ink-black bg-arcade-cream px-2 py-0.5 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df]">
-                  3D
-                </span>
-                <span className="flex items-center gap-1 rounded-[6px] border border-ink-black bg-arcade-cream px-2 py-0.5 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df]">
-                  AR
-                  <span className="rounded-[9999px] border border-ink-black px-1 text-[10px] font-normal leading-[1.5]">
-                    AR
-                  </span>
-                </span>
-              </div>
-            </div>
+          {/* Left — Sketchfab 3D viewer */}
+          <div className="relative overflow-hidden rounded-[12px] border border-ink-black bg-arcade-cream">
+            <iframe
+              key={selectedProduct.sketchfabModelId}
+              title={selectedProduct.name}
+              className="h-[400px] w-full"
+              frameBorder={0}
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              allowFullScreen
+              src={`https://sketchfab.com/models/${selectedProduct.sketchfabModelId}/embed?autospin=1&autostart=1&ui_infos=0&ui_watermark=0&ui_settings=0&ui_help=0&ui_annotations=0&ui_hint=0&ui_vr=0`}
+            />
           </div>
 
           {/* Right — product info, features, buy button */}
           <div className="flex flex-col justify-center">
             <h1 className="text-[18px] font-bold leading-[1.56] text-ink-black">
-              {heroProduct.name.toUpperCase()}
+              {selectedProduct.name.toUpperCase()}
             </h1>
             <p className="mt-2 text-[16px] font-normal leading-[1.5] text-ink-black">
-              {heroProduct.description}
+              {selectedProduct.description}
             </p>
 
-            {/* Feature list — like the reference */}
+            {/* Feature list */}
             <ul className="mt-4 space-y-1">
-              <li data-animate="feature" className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                • Self-heating ceramic
-              </li>
-              <li data-animate="feature" className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                • Dimension-shift resistant
-              </li>
-              <li data-animate="feature" className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                • Quantum insulation layer
-              </li>
-              <li data-animate="feature" className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                • Dishwasher safe (most dimensions)
-              </li>
-              <li data-animate="feature" className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                • Made on Earth
-              </li>
+              {selectedProduct.features.map((feature, i) => (
+                <li
+                  key={i}
+                  data-animate="feature"
+                  className="text-[14px] font-normal leading-[1.43] text-ink-black"
+                >
+                  • {feature}
+                </li>
+              ))}
             </ul>
 
             {/* Buy button — green, the only green surface */}
             <div className="mt-6 flex items-center gap-3">
               <button
-                onClick={() => handleAddToCart(heroProduct.id)}
+                onClick={() => handleAddToCart(selectedProduct.id)}
                 className="rounded-[6px] bg-buy-green px-4 py-2 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
               >
-                BUY 〔${heroProduct.price.toFixed(2)}〕
-              </button>
-              {/* TRY IN AR — ghost button */}
-              <button className="flex items-center gap-1 rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream">
-                TRY IN
-                <span className="rounded-[9999px] border border-ink-black px-1 text-[10px] font-normal leading-[1.5]">
-                  AR
-                </span>
+                BUY 〔${selectedProduct.price.toFixed(2)}〕
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Other products — compact grid below the hero */}
-      {otherProducts.length > 0 && (
-        <section className="mx-auto mt-[44px] w-full max-w-[1200px] px-6">
-          <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
-            MORE GEAR
-          </h2>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {otherProducts.map((product) => (
-              <div
-                key={product.id}
-                data-animate="card"
-                className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-3"
-              >
-                <div className="flex h-24 items-center justify-center rounded-[12px] bg-arcade-cream">
-                  <span className="text-[40px] leading-none">{product.emoji}</span>
-                </div>
-                <div className="mt-2 flex items-start justify-between">
-                  <h3 className="text-[14px] font-bold leading-[1.43] text-ink-black">
-                    {product.name.toUpperCase()}
-                  </h3>
-                  <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </div>
-                <div className="mt-2 flex flex-col gap-1">
-                  <button className="flex items-center justify-center gap-1 rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream">
-                    TRY IN
-                    <span className="rounded-[9999px] border border-ink-black px-1 text-[10px] font-normal leading-[1.5]">
-                      AR
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleAddToCart(product.id)}
-                    className="w-full rounded-[6px] bg-buy-green px-3 py-2 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
-                  >
-                    ADD TO CART
-                  </button>
-                </div>
+      {/* Product selector — click to swap the 3D viewer */}
+      <section className="mx-auto mt-[44px] w-full max-w-[1200px] px-6">
+        <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
+          MORE GEAR
+        </h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {otherProducts.map((product) => (
+            <button
+              key={product.id}
+              data-animate="card"
+              onClick={() => setSelectedProduct(product)}
+              className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-3 text-left transition hover:border-ink-black"
+            >
+              {/* Thumbnail — Sketchfab preview image */}
+              <div className="relative h-24 overflow-hidden rounded-[12px] bg-arcade-cream">
+                <img
+                  src={`https://sketchfab.com/models/${product.sketchfabModelId}/textures/cropped-512/thumbnail`}
+                  alt={product.name}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    // Fallback to emoji if thumbnail fails
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[40px] leading-none">
+                  {product.emoji}
+                </span>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+              <div className="mt-2 flex items-start justify-between">
+                <h3 className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                  {product.name.toUpperCase()}
+                </h3>
+                <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
+                  ${product.price.toFixed(2)}
+                </span>
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
+                  VIEW IN 3D
+                </span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToCart(product.id);
+                  }}
+                  className="rounded-[6px] bg-buy-green px-3 py-1 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
+                >
+                  ADD TO CART
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </section>
 
       {/* Footer Strip */}
       <footer
@@ -423,12 +404,10 @@ export function LandingClient({
       {/* === SLIDE-OUT CART PANEL === */}
       {cartState.open && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 z-40 bg-ink-black/40"
             onClick={() => setCartState((prev) => ({ ...prev, open: false }))}
           />
-          {/* Panel — slides in from right */}
           <div className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-ink-black bg-arcade-cream">
             {/* Cart header */}
             <div className="flex items-center justify-between border-b border-ink-black p-3">
@@ -500,7 +479,10 @@ export function LandingClient({
                   </button>
                   <a
                     href="/?breaks=true"
-                    onClick={() => setCheckout({ phase: "form", breaksEnabled: true })}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCheckout({ phase: "form", breaksEnabled: true });
+                    }}
                     className="rounded-[6px] border border-ink-black bg-transparent px-3 py-2 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
                   >
                     DEMO BREAKS
@@ -509,7 +491,7 @@ export function LandingClient({
               </div>
             )}
 
-            {/* === CHECKOUT FORM (inside cart panel) === */}
+            {/* === CHECKOUT FORM === */}
             {checkout.phase === "form" && (
               <div className="border-t border-ink-black p-3">
                 <div className="mb-3 flex items-center justify-between">
