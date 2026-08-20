@@ -485,7 +485,7 @@ export function LandingClient({
                     }}
                     className="rounded-[6px] border border-ink-black bg-transparent px-3 py-2 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
                   >
-                    DEMO BREAKS
+                    ⚠ TRY INVISIBLE BREAKS
                   </a>
                 </div>
               </div>
@@ -507,9 +507,32 @@ export function LandingClient({
                 </div>
 
                 {checkout.breaksEnabled && (
-                  <div className="mb-3 rounded-[12px] border border-ink-black bg-arcade-cream p-3">
+                  <div className="mb-3 space-y-2 rounded-[12px] border border-ink-black bg-arcade-cream p-3">
+                    <p className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                      ⚠ INVISIBLE BREAKS ARE LIVE
+                    </p>
                     <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
-                      INVISIBLE BREAKS ENABLED. KANE CLI WILL CATCH CONSOLE ERRORS AND 500 RESPONSES.
+                      This page looks normal. But behind the scenes:
+                    </p>
+                    <ul className="space-y-1 pl-3">
+                      <li className="text-[14px] font-normal leading-[1.43] text-ink-black">
+                        • Console errors are firing every 0.5s
+                      </li>
+                      <li className="text-[14px] font-normal leading-[1.43] text-ink-black">
+                        • The shipping API is returning 500
+                      </li>
+                    </ul>
+                    <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+                      Screenshots and visual testing miss these. Kane CLI catches them.
+                    </p>
+                    <a
+                      href="/dashboard"
+                      className="block rounded-[6px] bg-buy-green px-3 py-2 text-center text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
+                    >
+                      → SEE KANE CLI CATCH THEM
+                    </a>
+                    <p className="text-[10px] font-normal leading-[1.5] text-muted-gray">
+                      Or open DevTools Console to see the errors yourself.
                     </p>
                   </div>
                 )}
