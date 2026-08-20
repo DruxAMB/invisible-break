@@ -477,16 +477,12 @@ export function LandingClient({
                   >
                     CHECKOUT
                   </button>
-                  <a
-                    href="/?breaks=true"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCheckout({ phase: "form", breaksEnabled: true });
-                    }}
+                  <button
+                    onClick={() => setCheckout({ phase: "form", breaksEnabled: true })}
                     className="rounded-[6px] border border-ink-black bg-transparent px-3 py-2 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
                   >
                     ⚠ TRY INVISIBLE BREAKS
-                  </a>
+                  </button>
                 </div>
               </div>
             )}

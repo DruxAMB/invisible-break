@@ -30,7 +30,7 @@ When you read `watcher-output/failure.md`:
    - `network_error`: A failed network request. Fix by correcting the URL or adding error handling.
 
 2. **Locate the source** using the evidence excerpt and step number:
-   - Console errors usually come from `src/app/checkout/CheckoutForm.tsx` (client-side `useEffect`).
+   - Console errors usually come from `src/app/LandingClient.tsx` (client-side `useEffect` in the checkout form section).
    - 5xx errors usually come from `src/app/api/*/route.ts` (server-side API routes).
 
 3. **Fix the code** — make the minimum change needed to resolve the break:

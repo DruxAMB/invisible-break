@@ -338,13 +338,13 @@ export default function DashboardPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             <a
-              href="/checkout?breaks=true"
+              href="/?breaks=true"
               className="rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
             >
               BROKEN CHECKOUT
             </a>
             <a
-              href="/checkout"
+              href="/"
               className="rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
             >
               FIXED CHECKOUT

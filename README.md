@@ -52,14 +52,14 @@ A screenshot test passes. Kane CLI catches both.
    - `console_error`: [Checkout] Failed to load feature flags
 
 3. **See both states** — the dashboard has links to:
-   - 🔴 **Broken checkout** (`/checkout?breaks=true`) — invisible breaks active
-   - 🟢 **Fixed checkout** (`/checkout`) — breaks resolved by the agent
+   - 🔴 **Broken store** (`/?breaks=true`) — invisible breaks active
+   - 🟢 **Fixed store** (`/`) — breaks resolved by the agent
    
    Both pages look identical. The difference is invisible — only Kane CLI catches it.
 
 4. **Read the failure report** — `watcher-output/failure.md` contains the structured evidence the agent needs to fix the code.
 
-5. **Agent fixes the code** — the agent reads the failure report, patches `CheckoutForm.tsx` (handles missing config safely) and `shipping-rates/route.ts` (returns a valid response), and saves.
+5. **Agent fixes the code** — the agent reads the failure report, patches `LandingClient.tsx` (handles missing config safely) and `shipping-rates/route.ts` (returns a valid response), and saves.
 
 6. **Watcher re-runs Kane** — the save triggers a new run. The dashboard goes green. Both breaks are fixed.
 
