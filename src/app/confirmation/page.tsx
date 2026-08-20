@@ -18,62 +18,75 @@ export default async function ConfirmationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-studio-charcoal text-bone-white">
-      {/* Navigation */}
-      <header className="px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-arcade-cream text-ink-black font-arcade">
+      {/* Marquee bar */}
+      <div className="marquee-sheen flex h-9 items-center justify-center px-4">
+        <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+          KIN. STORE. COUPONS. FREE SHIPPING THROUGH SPACETIME.
+        </p>
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-ink-black bg-arcade-cream px-6 py-3">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
-            <span className="text-ember-orange">●</span> QuantumStore
+          <Link href="/" className="text-[18px] font-bold leading-[1.56] text-ink-black">
+            ✚ QuantumStore
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1200px] px-6 py-32">
-        {/* Left-aligned, not centered */}
-        <h1 className="mb-8 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          Order Confirmed
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-6 py-[44px]">
+        <h1 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
+          ORDER CONFIRMED
         </h1>
-        <p className="mb-16 max-w-md font-times text-base leading-[1.2] text-ash-gray">
+        <p className="mb-[44px] max-w-md text-[16px] font-normal leading-[1.5] text-ink-black">
           Thank you, {order.name}. Your order is on its way.
         </p>
 
-        {/* Order details — GT-Flexa for labels and values, not serif */}
-        <div className="max-w-md space-y-4 rounded-[20px] border border-ash-gray/40 p-6">
+        {/* Order details — all Arcade font, no serif */}
+        <div className="max-w-md space-y-2 rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
           <div className="flex justify-between">
-            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Order ID</span>
-            <span className="font-gt-flexa text-sm font-normal text-lavender-link">
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">ORDER ID</span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
               {order.orderId}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Email</span>
-            <span className="font-gt-flexa text-sm font-normal text-bone-white">{order.email}</span>
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">EMAIL</span>
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">{order.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Ship to</span>
-            <span className="max-w-[200px] truncate font-gt-flexa text-sm font-normal text-bone-white">
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">SHIP TO</span>
+            <span className="max-w-[200px] truncate text-[14px] font-normal leading-[1.43] text-ink-black">
               {order.address}
             </span>
           </div>
         </div>
 
-        {/* White ghost button — secondary action */}
+        {/* Ghost button — back to store */}
         <Link
           href="/"
-          className="mt-12 inline-block rounded-[20px] border border-bone-white px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:bg-bone-white/10"
+          className="mt-6 inline-block rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
         >
-          ← Back to Store
+          ← BACK TO STORE
         </Link>
       </main>
 
       {/* Footer */}
-      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
-        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          QuantumStore
-        </p>
-        <p className="mt-4 font-times text-sm text-ash-gray">
-          Built with an AI agent. Verified with Kane CLI.
-        </p>
+      <footer className="border-t border-pixel-gray bg-arcade-cream px-6 py-4">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+            © QUANTUMSTORE 2026
+          </p>
+          <div className="flex gap-6">
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              BUILT WITH DEVIN
+            </span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              VERIFIED WITH KANE
+            </span>
+          </div>
+        </div>
       </footer>
     </div>
   );

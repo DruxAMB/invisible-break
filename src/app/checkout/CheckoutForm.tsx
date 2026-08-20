@@ -74,114 +74,130 @@ export function CheckoutForm({
   }
 
   return (
-    <div className="min-h-screen bg-studio-charcoal text-bone-white">
-      {/* Navigation */}
-      <header className="px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-arcade-cream text-ink-black font-arcade">
+      {/* Marquee bar */}
+      <div className="marquee-sheen flex h-9 items-center justify-center px-4">
+        <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+          KIN. STORE. COUPONS. FREE SHIPPING THROUGH SPACETIME.
+        </p>
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-ink-black bg-arcade-cream px-6 py-3">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
-            <span className="text-ember-orange">●</span> QuantumStore
+          <Link href="/" className="text-[18px] font-bold leading-[1.56] text-ink-black">
+            ✚ QuantumStore
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               href="/dashboard"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Verify
+              VERIFY
             </Link>
             <Link
               href="/cart"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Cart
+              CART
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1200px] px-6 py-16">
-        <h1 className="mb-16 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          Checkout
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-6 py-[44px]">
+        <h1 className="mb-[44px] text-[18px] font-bold leading-[1.56] text-ink-black">
+          CHECKOUT
         </h1>
 
         {breaksEnabled && (
-          <div className="mb-12 rounded-[20px] border border-ash-gray/40 px-6 py-4">
-            <p className="font-gt-flexa text-sm font-normal text-bone-white">
-              Invisible breaks enabled. The page looks fine, but Kane CLI will catch
-              console errors and 500 responses.{" "}
-              <Link href="/checkout" className="text-lavender-link hover:underline">
-                Try the fixed version
+          <div className="mb-6 rounded-[12px] border border-ink-black bg-arcade-cream p-3">
+            <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+              INVISIBLE BREAKS ENABLED. THE PAGE LOOKS FINE, BUT KANE CLI WILL CATCH
+              CONSOLE ERRORS AND 500 RESPONSES.{" "}
+              <Link href="/checkout" className="font-bold underline">
+                TRY THE FIXED VERSION
               </Link>
               .
             </p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="max-w-xl space-y-8">
+        <form onSubmit={handleSubmit} className="max-w-md space-y-4">
           <div>
-            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
-              Full Name
+            <label className="mb-1 block text-[14px] font-bold leading-[1.43] text-ink-black">
+              FULL NAME
             </label>
             <input
               type="text"
               name="name"
               required
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[6px] border border-ink-black bg-arcade-cream px-3 py-2 text-[16px] font-normal leading-[1.5] text-ink-black outline-none transition focus:border-charcoal"
               placeholder="Ada Lovelace"
             />
           </div>
 
           <div>
-            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
-              Email
+            <label className="mb-1 block text-[14px] font-bold leading-[1.43] text-ink-black">
+              EMAIL
             </label>
             <input
               type="email"
               name="email"
               required
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[6px] border border-ink-black bg-arcade-cream px-3 py-2 text-[16px] font-normal leading-[1.5] text-ink-black outline-none transition focus:border-charcoal"
               placeholder="ada@analytical.engine"
             />
           </div>
 
           <div>
-            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
-              Shipping Address
+            <label className="mb-1 block text-[14px] font-bold leading-[1.43] text-ink-black">
+              SHIPPING ADDRESS
             </label>
             <textarea
               name="address"
               required
               rows={3}
-              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-gt-flexa text-base font-normal text-bone-white outline-none transition focus:border-bone-white"
+              className="w-full rounded-[6px] border border-ink-black bg-arcade-cream px-3 py-2 text-[16px] font-normal leading-[1.5] text-ink-black outline-none transition focus:border-charcoal"
               placeholder="221B Baker Street, London, NW1 6XE"
             />
           </div>
 
-          <div className="flex items-center justify-between rounded-[20px] border border-ash-gray/40 px-6 py-4">
-            <span className="font-gt-flexa text-sm font-normal text-ash-gray">Shipping</span>
-            <span className="font-gt-flexa text-base font-normal text-bone-white">
+          <div className="flex items-center justify-between rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
+              SHIPPING
+            </span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
               {shippingRate !== null ? `$${shippingRate.toFixed(2)}` : "Calculating…"}
             </span>
           </div>
 
-          {/* Single ember CTA per viewport */}
+          {/* Single green CTA — the purchase action */}
           <button
             type="submit"
             disabled={submitting}
-            className="block rounded-[20px] bg-ember-orange px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
+            className="block w-full rounded-[6px] bg-buy-green px-4 py-2 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90 disabled:opacity-40"
           >
-            {submitting ? "Processing…" : "Complete Order"}
+            {submitting ? "PROCESSING…" : "COMPLETE ORDER"}
           </button>
         </form>
       </main>
 
       {/* Footer */}
-      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
-        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          QuantumStore
-        </p>
-        <p className="mt-4 font-times text-sm text-ash-gray">
-          Built with an AI agent. Verified with Kane CLI.
-        </p>
+      <footer className="border-t border-pixel-gray bg-arcade-cream px-6 py-4">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+            © QUANTUMSTORE 2026
+          </p>
+          <div className="flex gap-6">
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              BUILT WITH DEVIN
+            </span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              VERIFIED WITH KANE
+            </span>
+          </div>
+        </div>
       </footer>
     </div>
   );

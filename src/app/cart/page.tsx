@@ -8,95 +8,100 @@ export default async function CartPage() {
   const count = cartCount(cart);
 
   return (
-    <div className="min-h-screen bg-studio-charcoal text-bone-white">
-      {/* Navigation */}
-      <header className="px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-arcade-cream text-ink-black font-arcade">
+      {/* Marquee bar */}
+      <div className="marquee-sheen flex h-9 items-center justify-center px-4">
+        <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+          KIN. STORE. COUPONS. FREE SHIPPING THROUGH SPACETIME.
+        </p>
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-ink-black bg-arcade-cream px-6 py-3">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
-            <span className="text-ember-orange">●</span> QuantumStore
+          <Link href="/" className="text-[18px] font-bold leading-[1.56] text-ink-black">
+            ✚ QuantumStore
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               href="/dashboard"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Verify
+              VERIFY
             </Link>
             <Link
               href="/cart"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Cart{count > 0 ? ` (${count})` : ""}
+              CART{count > 0 ? ` (${count})` : ""}
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1200px] px-6 py-16">
-        <h1 className="mb-16 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          Your Cart
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-6 py-[44px]">
+        <h1 className="mb-[44px] text-[18px] font-bold leading-[1.56] text-ink-black">
+          YOUR CART
         </h1>
 
         {cart.length === 0 ? (
-          <div className="rounded-[20px] border border-ash-gray/40 p-24">
-            <p className="mb-8 font-times text-base text-ash-gray">
+          <div className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-12">
+            <p className="mb-4 text-[16px] font-normal leading-[1.5] text-ink-black">
               Your cart is empty.
             </p>
-            {/* Lavender outlined action — nav-level, not purchase */}
             <Link
               href="/"
-              className="inline-block rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="inline-block rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Browse Products
+              BROWSE PRODUCTS
             </Link>
           </div>
         ) : (
           <>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {cart.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center gap-6 rounded-[20px] border border-ash-gray/40 p-6"
+                  className="flex items-center gap-3 rounded-[12px] border border-pixel-gray bg-arcade-cream p-3"
                 >
-                  <div className="text-3xl">{item.emoji}</div>
+                  <span className="text-[24px] leading-none">{item.emoji}</span>
                   <div className="flex-1">
-                    <h3 className="font-gt-flexa text-[24px] font-normal text-bone-white">
-                      {item.name}
+                    <h3 className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                      {item.name.toUpperCase()}
                     </h3>
-                    <p className="font-gt-flexa text-sm text-ash-gray">
+                    <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
                       ${item.price.toFixed(2)} × {item.quantity}
                     </p>
                   </div>
-                  <div className="font-gt-flexa text-base font-normal text-bone-white">
+                  <span className="text-[14px] font-normal leading-[1.43] text-ink-black">
                     ${(item.price * item.quantity).toFixed(2)}
-                  </div>
-                  {/* Remove — lavender outlined, not a purchase action */}
+                  </span>
                   <form action={removeProduct}>
                     <input type="hidden" name="productId" value={item.productId} />
                     <button
                       type="submit"
-                      className="rounded-[20px] border border-lavender-link px-3 py-1 font-gt-flexa text-xs font-normal text-lavender-link transition hover:bg-lavender-link/10"
+                      className="rounded-[6px] border border-muted-gray px-2 py-0.5 text-[14px] font-normal leading-[1.43] text-muted-gray transition hover:border-ink-black hover:text-ink-black"
                     >
-                      Remove
+                      REMOVE
                     </button>
                   </form>
                 </div>
               ))}
             </div>
 
-            <div className="mt-16 flex items-center justify-between border-t border-ash-gray/20 pt-8">
+            <div className="mt-6 flex items-center justify-between border-t border-pixel-gray pt-4">
               <div>
-                <p className="font-gt-flexa text-sm font-normal text-ash-gray">Total</p>
-                <p className="font-gt-flexa text-[32px] font-extralight text-bone-white">
+                <p className="text-[14px] font-normal leading-[1.43] text-ink-black">TOTAL</p>
+                <p className="text-[18px] font-bold leading-[1.56] text-ink-black">
                   ${total.toFixed(2)}
                 </p>
               </div>
-              {/* Single ember CTA per viewport */}
+              {/* Single green CTA — checkout is the purchase action */}
               <Link
                 href="/checkout"
-                className="rounded-[20px] bg-ember-orange px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
+                className="rounded-[6px] bg-buy-green px-4 py-2 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
               >
-                Checkout →
+                CHECKOUT →
               </Link>
             </div>
           </>
@@ -104,13 +109,20 @@ export default async function CartPage() {
       </main>
 
       {/* Footer */}
-      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
-        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          QuantumStore
-        </p>
-        <p className="mt-4 font-times text-sm text-ash-gray">
-          Built with an AI agent. Verified with Kane CLI.
-        </p>
+      <footer className="border-t border-pixel-gray bg-arcade-cream px-6 py-4">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+            © QUANTUMSTORE 2026
+          </p>
+          <div className="flex gap-6">
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              BUILT WITH DEVIN
+            </span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              VERIFIED WITH KANE
+            </span>
+          </div>
+        </div>
       </footer>
     </div>
   );

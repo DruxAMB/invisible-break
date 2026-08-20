@@ -96,207 +96,215 @@ export default function DashboardPage() {
   const bugVerdict = result?.bugVerdict;
 
   return (
-    <div className="min-h-screen bg-studio-charcoal text-bone-white">
-      {/* Navigation */}
-      <header className="px-6 py-6">
+    <div className="flex min-h-screen flex-col bg-arcade-cream text-ink-black font-arcade">
+      {/* Marquee bar */}
+      <div className="marquee-sheen flex h-9 items-center justify-center px-4">
+        <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+          KIN. STORE. COUPONS. KANE CLI VERIFICATION DASHBOARD.
+        </p>
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-ink-black bg-arcade-cream px-6 py-3">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
-              <span className="text-ember-orange">●</span> QuantumStore
+          <div className="flex items-center gap-2">
+            <Link href="/" className="text-[18px] font-bold leading-[1.56] text-ink-black">
+              ✚ QuantumStore
             </Link>
-            <span className="font-gt-flexa text-sm text-ash-gray">/</span>
-            <span className="font-gt-flexa text-sm text-ash-gray">Invisible Break</span>
+            <span className="text-[14px] font-normal leading-[1.43] text-ink-black">/</span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              INVISIBLE BREAK
+            </span>
           </div>
           <Link
             href="/"
-            className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+            className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
           >
-            ← Store
+            ← STORE
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1200px] px-6 py-16">
-        {/* Hero — left-aligned */}
-        <div className="mb-16">
-          <h1 className="mb-4 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-            Verification
-          </h1>
-          <p className="max-w-lg font-times text-base leading-[1.2] text-ash-gray">
-            Kane CLI runs flows with DevTools assertions — catching what screenshots miss.
-          </p>
-        </div>
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-6 py-[44px]">
+        {/* Title */}
+        <h1 className="mb-2 text-[18px] font-bold leading-[1.56] text-ink-black">
+          VERIFICATION
+        </h1>
+        <p className="mb-[44px] max-w-lg text-[16px] font-normal leading-[1.5] text-ink-black">
+          Kane CLI runs flows with DevTools assertions — catching what screenshots miss.
+        </p>
 
-        {/* Status bar — one ember CTA */}
-        <div className="mb-12 flex items-center justify-between rounded-[20px] border border-ash-gray/40 p-6">
-          <div className="flex items-center gap-4">
+        {/* Status bar — green Run button is the single purchase-equivalent CTA */}
+        <div className="mb-[44px] flex items-center justify-between rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <div className="flex items-center gap-3">
             <div
-              className={`h-3 w-3 rounded-full ${
+              className={`h-3 w-3 ${
                 isRunning
-                  ? "animate-pulse bg-ember-orange"
+                  ? "animate-pulse bg-marquee-orange"
                   : state.status === "passed"
-                  ? "bg-bone-white"
+                  ? "bg-buy-green"
                   : state.status === "failed"
-                  ? "bg-ember-orange"
-                  : "bg-ash-gray"
+                  ? "bg-ink-black"
+                  : "bg-muted-gray"
               }`}
             />
             <div>
-              <div className="font-gt-flexa text-base font-normal text-bone-white">
+              <div className="text-[16px] font-bold leading-[1.5] text-ink-black">
                 {isRunning
-                  ? "Running verification..."
+                  ? "RUNNING VERIFICATION..."
                   : state.status === "passed"
-                  ? "All checks passed"
+                  ? "ALL CHECKS PASSED"
                   : state.status === "failed"
-                  ? `${bugVerdict?.signals.length ?? 0} invisible break${(bugVerdict?.signals.length ?? 0) > 1 ? "s" : ""} found`
-                  : "Idle — click Run to verify"}
+                  ? `${bugVerdict?.signals.length ?? 0} INVISIBLE BREAK${(bugVerdict?.signals.length ?? 0) > 1 ? "S" : ""} FOUND`
+                  : "IDLE — CLICK RUN TO VERIFY"}
               </div>
               {result && (
-                <div className="font-gt-flexa text-sm font-normal text-ash-gray">
+                <div className="text-[14px] font-normal leading-[1.43] text-ink-black">
                   Last run: {result.duration}s · {result.creditsConsumed.toFixed(2)} credits · {new Date(result.timestamp).toLocaleTimeString()}
                 </div>
               )}
             </div>
           </div>
-          {/* Single ember CTA per viewport */}
           <button
             onClick={triggerRun}
             disabled={isRunning || polling}
-            className="rounded-[20px] bg-ember-orange px-4 py-px font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
+            className="rounded-[6px] bg-buy-green px-4 py-2 text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90 disabled:opacity-40"
           >
-            {isRunning ? "Running..." : "Run Verification"}
+            {isRunning ? "RUNNING..." : "RUN VERIFICATION"}
           </button>
         </div>
 
         {error && (
-          <div className="mb-8 rounded-[20px] border border-ash-gray/40 px-6 py-4">
-            <p className="font-gt-flexa text-sm font-normal text-bone-white">{error}</p>
+          <div className="mb-6 rounded-[12px] border border-ink-black bg-arcade-cream p-3">
+            <p className="text-[14px] font-normal leading-[1.43] text-ink-black">{error}</p>
           </div>
         )}
 
         {/* Failure cards */}
         {hasFailures && bugVerdict && (
-          <div className="mb-12">
-            <h2 className="mb-6 font-tobias-light text-[42px] font-normal uppercase tracking-[-0.062em] text-bone-white">
-              Invisible Breaks Detected
+          <div className="mb-[44px]">
+            <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
+              INVISIBLE BREAKS DETECTED
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {bugVerdict.signals.map((signal, i) => (
                 <div
                   key={i}
-                  className="rounded-[20px] border border-ash-gray/40 p-6"
+                  className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-3"
                 >
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="rounded-[20px] border border-ash-gray/40 px-3 py-1 font-gt-flexa text-xs font-normal text-bone-white">
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="rounded-[9999px] border border-ink-black px-2 py-0.5 text-[10px] font-normal leading-[1.5] text-ink-black">
                       {signal.type}
                     </span>
                     {signal.step && (
-                      <span className="font-gt-flexa text-xs font-normal text-ash-gray">step {signal.step}</span>
+                      <span className="text-[10px] font-normal leading-[1.5] text-ink-black">
+                        STEP {signal.step}
+                      </span>
                     )}
                   </div>
-                  <pre className="overflow-x-auto rounded-[20px] bg-carbon/40 p-4 font-gt-flexa text-sm font-normal text-bone-white/80">
+                  <pre className="overflow-x-auto rounded-[12px] border border-pixel-gray bg-arcade-cream p-3 text-[14px] font-normal leading-[1.43] text-ink-black">
                     {signal.excerpt}
                   </pre>
                 </div>
               ))}
             </div>
 
-            {/* Bug verdict — GT-Flexa for all labels and values */}
-            <div className="mt-8 rounded-[20px] border border-ash-gray/40 p-6">
-              <h3 className="mb-4 font-tobias-light text-[32px] font-normal tracking-[-0.048em] text-bone-white">
-                Bug Verdict
+            {/* Bug verdict */}
+            <div className="mt-4 rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+              <h3 className="mb-3 text-[18px] font-bold leading-[1.56] text-ink-black">
+                BUG VERDICT
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex gap-4">
-                  <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Title</span>
-                  <span className="flex-1 font-gt-flexa text-sm font-normal text-bone-white">{bugVerdict.bug_title}</span>
+                  <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">TITLE</span>
+                  <span className="flex-1 text-[14px] font-bold leading-[1.43] text-ink-black">{bugVerdict.bug_title}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Category</span>
-                  <span className="font-gt-flexa text-sm font-normal text-bone-white">{bugVerdict.family} / {bugVerdict.category}</span>
+                  <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">CATEGORY</span>
+                  <span className="text-[14px] font-normal leading-[1.43] text-ink-black">{bugVerdict.family} / {bugVerdict.category}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Severity</span>
-                  <span className="capitalize font-gt-flexa text-sm font-normal text-bone-white">{bugVerdict.severity}</span>
+                  <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">SEVERITY</span>
+                  <span className="capitalize text-[14px] font-normal leading-[1.43] text-ink-black">{bugVerdict.severity}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Confidence</span>
-                  <span className="font-gt-flexa text-sm font-normal text-bone-white">{(bugVerdict.confidence * 100).toFixed(0)}%</span>
+                  <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">CONFIDENCE</span>
+                  <span className="text-[14px] font-bold leading-[1.43] text-ink-black">{(bugVerdict.confidence * 100).toFixed(0)}%</span>
                 </div>
                 {bugVerdict.root_cause && (
                   <div className="flex gap-4">
-                    <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Root cause</span>
-                    <span className="flex-1 font-times text-sm text-bone-white">{bugVerdict.root_cause}</span>
+                    <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">ROOT CAUSE</span>
+                    <span className="flex-1 text-[14px] font-normal leading-[1.43] text-ink-black">{bugVerdict.root_cause}</span>
                   </div>
                 )}
                 {bugVerdict.suggestion && (
                   <div className="flex gap-4">
-                    <span className="w-32 font-gt-flexa text-sm font-normal text-ash-gray">Suggestion</span>
-                    <span className="flex-1 font-times text-sm text-lavender-link">{bugVerdict.suggestion}</span>
+                    <span className="w-32 text-[14px] font-normal leading-[1.43] text-ink-black">SUGGESTION</span>
+                    <span className="flex-1 text-[14px] font-bold leading-[1.43] text-ink-black">{bugVerdict.suggestion}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Agent action — white ghost button aesthetic */}
-            <div className="mt-8 rounded-[20px] border border-ash-gray/40 p-6">
-              <h3 className="mb-2 font-tobias-light text-[32px] font-normal tracking-[-0.048em] text-bone-white">
-                Send to Agent
+            {/* Agent action */}
+            <div className="mt-4 rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+              <h3 className="mb-2 text-[18px] font-bold leading-[1.56] text-ink-black">
+                SEND TO AGENT
               </h3>
-              <p className="mb-4 font-times text-sm text-ash-gray">
+              <p className="mb-3 text-[14px] font-normal leading-[1.43] text-ink-black">
                 A structured failure report has been generated. The agent reads it,
                 patches the code, and saves — the watcher re-runs Kane automatically.
               </p>
-              <div className="rounded-[20px] bg-carbon/40 p-3 font-gt-flexa text-xs font-normal text-ash-gray">
+              <div className="rounded-[6px] border border-pixel-gray bg-arcade-cream p-2 text-[14px] font-normal leading-[1.43] text-ink-black">
                 watcher-output/failure.md ← agent reads this
               </div>
             </div>
           </div>
         )}
 
-        {/* Passed state — left-aligned, not centered */}
+        {/* Passed state — left-aligned */}
         {state.status === "passed" && result && (
-          <div className="rounded-[20px] border border-ash-gray/40 p-12">
-            <h2 className="mb-4 font-gt-flexa text-[42px] font-extralight leading-[1.2] text-bone-white">
-              All Flows Verified
+          <div className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-6">
+            <h2 className="mb-3 text-[18px] font-bold leading-[1.56] text-ink-black">
+              ALL FLOWS VERIFIED
             </h2>
-            <p className="font-times text-base text-ash-gray">
+            <p className="text-[16px] font-normal leading-[1.5] text-ink-black">
               No console errors. No 5xx responses. No invisible breaks.
             </p>
-            <p className="mt-3 font-times text-sm text-ash-gray">
+            <p className="mt-2 text-[14px] font-normal leading-[1.43] text-ink-black">
               Re-runs are free — this runs on every save without burning credits.
             </p>
           </div>
         )}
 
-        {/* Step results — GT-Flexa for all UI chrome */}
+        {/* Step results */}
         {result && result.steps.length > 0 && (
-          <div className="mt-12">
-            <h2 className="mb-6 font-tobias-light text-[42px] font-normal uppercase tracking-[-0.062em] text-bone-white">
-              Step Results
+          <div className="mt-[44px]">
+            <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
+              STEP RESULTS
             </h2>
-            <div className="space-y-2">
+            <div className="space-y-1">
               {result.steps.map((step) => (
                 <div
                   key={step.index}
-                  className="flex items-center justify-between rounded-[20px] border border-ash-gray/40 px-6 py-4"
+                  className="flex items-center justify-between rounded-[12px] border border-pixel-gray bg-arcade-cream p-3"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <span
-                      className={`h-2 w-2 rounded-full ${
+                      className={`h-2 w-2 ${
                         step.status === "passed"
-                          ? "bg-bone-white"
+                          ? "bg-buy-green"
                           : step.status === "failed"
-                          ? "bg-ember-orange"
-                          : "bg-ash-gray"
+                          ? "bg-ink-black"
+                          : "bg-muted-gray"
                       }`}
                     />
-                    <span className="font-gt-flexa text-sm font-normal text-bone-white">
-                      Step {step.index}: {step.heading}
+                    <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                      STEP {step.index}: {step.heading.toUpperCase()}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 font-gt-flexa text-sm font-normal text-ash-gray">
-                    <span className="capitalize">{step.status}</span>
+                  <div className="flex items-center gap-4 text-[14px] font-normal leading-[1.43] text-ink-black">
+                    <span className="uppercase">{step.status}</span>
                     <span>{step.duration}s</span>
                   </div>
                 </div>
@@ -305,76 +313,83 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Links — lavender inline link */}
+        {/* Links */}
         {result?.shareUrl && (
-          <div className="mt-8">
+          <div className="mt-4">
             <a
               href={result.shareUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-gt-flexa text-base font-normal text-lavender-link hover:underline"
+              className="text-[14px] font-bold leading-[1.43] text-ink-black underline"
             >
-              View on Kane Dashboard →
+              VIEW ON KANE DASHBOARD →
             </a>
           </div>
         )}
 
-        {/* Demo controls — lavender outlined actions (nav-level, not purchase) */}
-        <div className="mt-16 rounded-[20px] border border-ash-gray/40 p-6">
-          <h3 className="mb-3 font-tobias-light text-[32px] font-normal tracking-[-0.048em] text-bone-white">
-            Demo
+        {/* Demo controls — ghost buttons, not green */}
+        <div className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <h3 className="mb-2 text-[18px] font-bold leading-[1.56] text-ink-black">
+            DEMO
           </h3>
-          <p className="mb-6 font-times text-sm text-ash-gray">
+          <p className="mb-3 text-[14px] font-normal leading-[1.43] text-ink-black">
             The checkout page looks identical in both states. The difference is invisible —
             console errors and 500 responses that only Kane CLI catches.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             <a
               href="/checkout?breaks=true"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Broken checkout
+              BROKEN CHECKOUT
             </a>
             <a
               href="/checkout"
-              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm font-normal text-lavender-link transition hover:bg-lavender-link/10"
+              className="rounded-[6px] border border-ink-black bg-transparent px-3 py-1 text-[14px] font-normal leading-[1.43] text-ink-black shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-ink-black hover:text-arcade-cream"
             >
-              Fixed checkout
+              FIXED CHECKOUT
             </a>
           </div>
         </div>
 
-        {/* Architecture diagram — GT-Flexa for all chrome */}
-        <div className="mt-12 rounded-[20px] border border-ash-gray/40 p-6">
-          <h3 className="mb-6 font-tobias-light text-[32px] font-normal tracking-[-0.048em] text-bone-white">
-            How the loop works
+        {/* Architecture diagram */}
+        <div className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <h3 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
+            HOW THE LOOP WORKS
           </h3>
-          <div className="flex flex-wrap items-center gap-2 font-gt-flexa text-xs font-normal text-ash-gray">
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Code change</span>
+          <div className="flex flex-wrap items-center gap-1 text-[10px] font-normal leading-[1.5] text-ink-black">
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">CODE CHANGE</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Watcher detects</span>
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">WATCHER DETECTS</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Kane runs flows</span>
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">KANE RUNS FLOWS</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">failure.md generated</span>
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">FAILURE.MD GENERATED</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Agent reads + fixes</span>
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">AGENT READS + FIXES</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Save triggers re-run</span>
+            <span className="rounded-[6px] border border-pixel-gray px-2 py-1">SAVE TRIGGERS RE-RUN</span>
             <span>→</span>
-            <span className="rounded-[20px] border border-bone-white/30 px-3 py-1.5 text-bone-white">Green</span>
+            <span className="rounded-[6px] border border-ink-black bg-arcade-cream px-2 py-1 font-bold">GREEN</span>
           </div>
         </div>
       </main>
 
-      {/* Footer — 128px gap, no borders */}
-      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
-        <p className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
-          QuantumStore
-        </p>
-        <p className="mt-4 font-times text-sm text-ash-gray">
-          Built with an AI agent. Verified with Kane CLI.
-        </p>
+      {/* Footer */}
+      <footer className="border-t border-pixel-gray bg-arcade-cream px-6 py-4">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+            © QUANTUMSTORE 2026
+          </p>
+          <div className="flex gap-6">
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              BUILT WITH DEVIN
+            </span>
+            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+              VERIFIED WITH KANE
+            </span>
+          </div>
+        </div>
       </footer>
     </div>
   );

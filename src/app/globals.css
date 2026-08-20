@@ -1,58 +1,64 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors — Electronic Materials Office® */
-  --color-studio-charcoal: #202020;
-  --color-bone-white: #ffffff;
-  --color-ash-gray: #9d9d9d;
-  --color-mid-felt: #eaeaea;
-  --color-carbon: #000000;
-  --color-ember-orange: #f45500;
-  --color-lavender-link: #9e9eff;
+  /* Colors — FRANKY'S */
+  --color-arcade-cream: #f3e5df;
+  --color-ink-black: #000000;
+  --color-pixel-gray: #e5e7eb;
+  --color-charcoal: #333333;
+  --color-carbon: #151515;
+  --color-muted-gray: #737373;
+  --color-marquee-orange: #faa21f;
+  --color-buy-green: #128e44;
 
-  /* Typography — Font Families */
-  --font-gt-flexa: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-tobias-light: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-times: var(--font-source-serif), ui-serif, Georgia, "Times New Roman", serif;
+  /* Typography — Sole typeface: Arcade (substitute: Silkscreen) */
+  --font-arcade: var(--font-silkscreen), "Press Start 2P", ui-sans-serif, system-ui, monospace;
 
-  /* Typography — Scale */
-  --text-body-sm: 16px;
-  --leading-body-sm: 1.2;
-  --text-subheading: 24px;
-  --leading-subheading: 1.2;
-  --text-subheading-lg: 26px;
-  --leading-subheading-lg: 1.2;
-  --text-subheading-xl: 28px;
-  --leading-subheading-xl: 1.2;
-  --text-heading-sm: 32px;
-  --leading-heading-sm: 1.2;
-  --tracking-heading-sm: -0.048em;
-  --text-heading: 42px;
-  --leading-heading: 1.2;
-  --tracking-heading: -0.062em;
-  --text-heading-lg: 68px;
-  --leading-heading-lg: 1.06;
-  --text-display: 86px;
-  --leading-display: 1;
+  /* Typography — Scale (10–18px only) */
+  --text-caption: 10px;
+  --leading-caption: 1.5;
+  --text-body-sm: 14px;
+  --leading-body-sm: 1.43;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --text-subheading: 18px;
+  --leading-subheading: 1.56;
 
-  /* Spacing */
+  /* Spacing — 4px base, compact */
   --spacing-4: 4px;
   --spacing-8: 8px;
-  --spacing-16: 16px;
+  --spacing-12: 12px;
   --spacing-24: 24px;
-  --spacing-48: 48px;
+  --spacing-44: 44px;
 
-  /* Border Radius */
-  --radius-2xl: 16px;
-  --radius-2xl-2: 20px;
+  /* Border Radius — 6px / 12px / 9999px only */
+  --radius-buttons: 6px;
+  --radius-cards: 12px;
+  --radius-tags: 9999px;
 
-  /* Shadows — only for CTAs */
-  --shadow-xl: rgba(245, 86, 0, 0.6) 0px 0px 30px 0px;
-  --shadow-xl-2: rgba(255, 255, 255, 0.3) 0px 0px 30px 0px;
+  /* Shadows — only inset cream highlight on buttons */
+  --shadow-subtle: rgb(243, 229, 223) 0px 1px 0px 0px inset;
 }
 
 body {
-  background: var(--color-studio-charcoal);
-  color: var(--color-bone-white);
-  font-family: var(--font-times);
+  background: var(--color-arcade-cream);
+  color: var(--color-ink-black);
+  font-family: var(--font-arcade);
+}
+
+/* Checkerboard pattern — 48px squares, cream + black */
+.checkerboard {
+  background-image:
+    linear-gradient(45deg, #000 25%, transparent 25%),
+    linear-gradient(-45deg, #000 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #000 75%),
+    linear-gradient(-45deg, transparent 75%, #000 75%);
+  background-size: 48px 48px;
+  background-position: 0 0, 0 24px, 24px -24px, -24px 0px;
+  background-color: #f3e5df;
+}
+
+/* Marquee sheen gradient — orange → cream → orange */
+.marquee-sheen {
+  background: linear-gradient(to right, #faa21f, #fef3c7, #faa21f);
 }
