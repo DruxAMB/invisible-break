@@ -6,6 +6,7 @@ import gsap from "gsap";
 import type { Product } from "@/lib/products";
 import type { Cart } from "@/lib/cart";
 import { addProduct, removeProduct, submitCheckout } from "@/lib/actions";
+import { ProductViewer } from "./ProductViewer";
 
 type LandingClientProps = {
   products: Product[];
@@ -277,16 +278,11 @@ export function LandingClient({
         className="mx-auto mt-[44px] w-full max-w-[1200px] px-6"
       >
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[55%_1fr]">
-          {/* Left — Sketchfab 3D viewer */}
-          <div className="relative overflow-hidden rounded-[12px] border border-ink-black bg-arcade-cream">
-            <iframe
-              key={selectedProduct.sketchfabModelId}
-              title={selectedProduct.name}
-              className="h-[400px] w-full"
-              frameBorder={0}
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              allowFullScreen
-              src={`https://sketchfab.com/models/${selectedProduct.sketchfabModelId}/embed?autospin=1&autostart=1&ui_infos=0&ui_watermark=0&ui_settings=0&ui_help=0&ui_annotations=0&ui_hint=0&ui_vr=0`}
+          {/* Left — local 3D viewer (Three.js + react-three-fiber) */}
+          <div className="relative h-[400px] overflow-hidden rounded-[12px] border border-ink-black bg-arcade-cream">
+            <ProductViewer
+              key={selectedProduct.id}
+              modelUrl={selectedProduct.modelPath}
             />
           </div>
 
@@ -338,21 +334,9 @@ export function LandingClient({
               onClick={() => setSelectedProduct(product)}
               className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-3 text-left transition hover:border-ink-black"
             >
-              {/* Thumbnail — Sketchfab preview image */}
-              <div className="relative h-24 overflow-hidden rounded-[12px] bg-arcade-cream">
-                <img
-                  src={`https://sketchfab.com/models/${product.sketchfabModelId}/textures/cropped-512/thumbnail`}
-                  alt={product.name}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    // Fallback to emoji if thumbnail fails
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[40px] leading-none">
-                  {product.emoji}
-                </span>
+              {/* Thumbnail — emoji placeholder on cream */}
+              <div className="flex h-24 items-center justify-center rounded-[12px] bg-arcade-cream border border-pixel-gray">
+                <span className="text-[40px] leading-none">{product.emoji}</span>
               </div>
               <div className="mt-2 flex items-start justify-between">
                 <h3 className="text-[14px] font-bold leading-[1.43] text-ink-black">
@@ -386,17 +370,30 @@ export function LandingClient({
         data-animate="footer"
         className="mt-[44px] border-t border-pixel-gray bg-arcade-cream px-6 py-4"
       >
-        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
-            © QUANTUMSTORE 2026
-          </p>
-          <div className="flex gap-6">
-            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
-              BUILT WITH DEVIN
-            </span>
-            <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
-              VERIFIED WITH KANE
-            </span>
+        <div className="mx-auto max-w-[1200px] space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
+              © QUANTUMSTORE 2026
+            </p>
+            <div className="flex gap-6">
+              <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                BUILT WITH DEVIN
+              </span>
+              <span className="text-[14px] font-bold leading-[1.43] text-ink-black">
+                VERIFIED WITH KANE
+              </span>
+            </div>
+          </div>
+          {/* 3D model attributions — required by CC licenses */}
+          <div className="space-y-1">
+            <p className="text-[10px] font-normal leading-[1.5] text-muted-gray">
+              3D MODELS:
+            </p>
+            {products.map((p) => (
+              <p key={p.id} className="text-[10px] font-normal leading-[1.5] text-muted-gray">
+                {p.attribution}
+              </p>
+            ))}
           </div>
         </div>
       </footer>

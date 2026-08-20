@@ -4,8 +4,9 @@ export type Product = {
   price: number;
   description: string;
   emoji: string;
-  sketchfabModelId: string;
+  modelPath: string;
   features: string[];
+  attribution: string;
 };
 
 export const PRODUCTS: Product[] = [
@@ -15,7 +16,7 @@ export const PRODUCTS: Product[] = [
     price: 24.99,
     description: "Keeps coffee hot through dimension shifts. Self-heating ceramic.",
     emoji: "☕",
-    sketchfabModelId: "6881f87bef1a4e9db61fdd0a7030b9cf",
+    modelPath: "/mug.glb",
     features: [
       "Self-heating ceramic",
       "Dimension-shift resistant",
@@ -23,6 +24,7 @@ export const PRODUCTS: Product[] = [
       "Dishwasher safe (most dimensions)",
       "Made on Earth",
     ],
+    attribution: '"Car Mug 1" (https://skfb.ly/KErN) by VirtualBG — CC BY-NC 4.0',
   },
   {
     id: "neural-headphones",
@@ -30,7 +32,7 @@ export const PRODUCTS: Product[] = [
     price: 189.0,
     description: "Plays the music you were about to think of. ANC + precognition.",
     emoji: "🎧",
-    sketchfabModelId: "e07049beeff949da853f314d50531bef",
+    modelPath: "/headset.glb",
     features: [
       "Active noise cancellation",
       "Precognitive track selection",
@@ -38,6 +40,7 @@ export const PRODUCTS: Product[] = [
       "40-hour battery (subjective time)",
       "Made on Earth",
     ],
+    attribution: '"David Clark Pilot Headset" (https://skfb.ly/o8Vs9) by simon_fischer — CC BY 4.0',
   },
   {
     id: "gravity-bottle",
@@ -45,7 +48,7 @@ export const PRODUCTS: Product[] = [
     price: 34.5,
     description: "Water stays inside no matter which way is down. Zero-G tested.",
     emoji: "🥤",
-    sketchfabModelId: "cf5dca2a57aa4f849e53739762f048fc",
+    modelPath: "/bottle.glb",
     features: [
       "Zero-G sealed valve",
       "Insulated for 12 hours",
@@ -53,6 +56,7 @@ export const PRODUCTS: Product[] = [
       "Fits any cup holder (any dimension)",
       "Made on Earth",
     ],
+    attribution: '"Vacuum Bottle" (https://skfb.ly/KLIJ) by VirtualBG — CC BY-NC 4.0',
   },
   {
     id: "photon-lamp",
@@ -60,7 +64,7 @@ export const PRODUCTS: Product[] = [
     price: 79.99,
     description: "Adjustable color temperature from candle to supernova. USB-C.",
     emoji: "💡",
-    sketchfabModelId: "b9458e04d30e4b6284d46d35880a9b95",
+    modelPath: "/lamp.glb",
     features: [
       "Color temp: candle to supernova",
       "USB-C fast charge",
@@ -68,6 +72,7 @@ export const PRODUCTS: Product[] = [
       "Aluminum chassis",
       "Made on Earth",
     ],
+    attribution: '"Desk lamp" (https://skfb.ly/6XZwF) by HASSAN — CC BY 4.0',
   },
 ];
 
