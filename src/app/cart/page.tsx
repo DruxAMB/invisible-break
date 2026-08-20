@@ -8,35 +8,43 @@ export default async function CartPage() {
   const count = cartCount(cart);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            Quantum<span className="text-emerald-400">Store</span>
+    <div className="min-h-screen bg-studio-charcoal text-bone-white">
+      {/* Navigation */}
+      <header className="px-6 py-6">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
+            <span className="text-ember-orange">●</span> QuantumStore
           </Link>
-          <Link
-            href="/cart"
-            className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm"
-          >
-            🛒 Cart
-            {count > 0 && (
-              <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-bold text-black">
-                {count}
-              </span>
-            )}
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+            >
+              Verify
+            </Link>
+            <Link
+              href="/cart"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
+            >
+              Cart{count > 0 ? ` (${count})` : ""}
+            </Link>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-6 py-12">
-        <h1 className="mb-8 text-3xl font-bold tracking-tight">Your Cart</h1>
+      <main className="mx-auto max-w-[1200px] px-6 py-16">
+        <h1 className="mb-16 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          Your Cart
+        </h1>
 
         {cart.length === 0 ? (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-12 text-center">
-            <p className="mb-4 text-zinc-400">Your cart is empty.</p>
+          <div className="rounded-[20px] border border-ash-gray/40 p-24 text-center">
+            <p className="mb-8 font-times text-base text-ash-gray">
+              Your cart is empty.
+            </p>
             <Link
               href="/"
-              className="inline-block rounded-lg bg-emerald-500 px-6 py-3 text-sm font-semibold text-black transition hover:bg-emerald-400"
+              className="inline-block rounded-[20px] bg-ember-orange px-6 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
             >
               Browse Products
             </Link>
@@ -47,23 +55,25 @@ export default async function CartPage() {
               {cart.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-4"
+                  className="flex items-center gap-6 rounded-[20px] border border-ash-gray/40 p-6"
                 >
                   <div className="text-3xl">{item.emoji}</div>
                   <div className="flex-1">
-                    <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-sm text-zinc-400">
+                    <h3 className="font-gt-flexa text-[24px] font-normal text-bone-white">
+                      {item.name}
+                    </h3>
+                    <p className="font-times text-sm text-ash-gray">
                       ${item.price.toFixed(2)} × {item.quantity}
                     </p>
                   </div>
-                  <div className="text-lg font-bold text-emerald-400">
+                  <div className="font-gt-flexa text-lg font-normal text-bone-white">
                     ${(item.price * item.quantity).toFixed(2)}
                   </div>
                   <form action={removeProduct}>
                     <input type="hidden" name="productId" value={item.productId} />
                     <button
                       type="submit"
-                      className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-red-400"
+                      className="rounded-[20px] border border-ash-gray/40 px-4 py-1.5 font-gt-flexa text-xs text-ash-gray transition hover:border-bone-white hover:text-bone-white"
                     >
                       Remove
                     </button>
@@ -72,16 +82,16 @@ export default async function CartPage() {
               ))}
             </div>
 
-            <div className="mt-8 flex items-center justify-between border-t border-zinc-800 pt-6">
+            <div className="mt-16 flex items-center justify-between border-t border-ash-gray/20 pt-8">
               <div>
-                <p className="text-sm text-zinc-400">Total</p>
-                <p className="text-2xl font-bold text-emerald-400">
+                <p className="font-times text-sm text-ash-gray">Total</p>
+                <p className="font-gt-flexa text-[32px] font-extralight text-bone-white">
                   ${total.toFixed(2)}
                 </p>
               </div>
               <Link
                 href="/checkout"
-                className="rounded-lg bg-emerald-500 px-8 py-3 text-sm font-semibold text-black transition hover:bg-emerald-400"
+                className="rounded-[20px] bg-ember-orange px-8 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
               >
                 Checkout →
               </Link>

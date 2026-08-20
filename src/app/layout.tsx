@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Inter_Tight, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["200", "400"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
+  weight: ["400"],
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -21,9 +29,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${interTight.variable} ${sourceSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-studio-charcoal text-bone-white">
+        {children}
+      </body>
     </html>
   );
 }

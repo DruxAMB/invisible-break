@@ -4,11 +4,13 @@ import { CheckoutForm } from "./CheckoutForm";
 
 export default function CheckoutPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center">
-        <p className="text-zinc-400">Loading checkout…</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-studio-charcoal">
+          <p className="font-times text-sm text-ash-gray">Loading checkout…</p>
+        </div>
+      }
+    >
       <CheckoutForm submitAction={submitCheckout} />
     </Suspense>
   );

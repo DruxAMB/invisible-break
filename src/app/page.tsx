@@ -8,62 +8,75 @@ export default async function HomePage() {
   const count = cartCount(cart);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      {/* Header */}
-      <header className="border-b border-zinc-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            Quantum<span className="text-emerald-400">Store</span>
+    <div className="min-h-screen bg-studio-charcoal text-bone-white">
+      {/* Navigation — transparent, no border, lavender outlined links + ember CTA */}
+      <header className="px-6 py-6">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
+            <span className="text-ember-orange">●</span> QuantumStore
           </Link>
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
             >
-              🛡️ Verify
+              Verify
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
             >
-              🛒 Cart
-              {count > 0 && (
-                <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-bold text-black">
-                  {count}
-                </span>
-              )}
+              Cart{count > 0 ? ` (${count})` : ""}
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Products */}
-      <main className="mx-auto max-w-5xl px-6 py-12">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight">
-          Future-grade gear for today.
+      {/* Hero — weight-200 headline, serif body, vast negative space */}
+      <section className="mx-auto max-w-[1200px] px-6 pt-24 pb-16">
+        <h1 className="font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          Future-grade gear
+          <br />
+          for today.
         </h1>
-        <p className="mb-8 text-zinc-400">
+        <p className="mt-8 max-w-md font-times text-base leading-[1.2] text-bone-white/80">
           Four products. No fluff. Free shipping through spacetime.
         </p>
+      </section>
 
+      {/* Section header — Tobias voice, all caps, tight tracking */}
+      <section className="mx-auto max-w-[1200px] px-6 pb-8">
+        <h2 className="font-tobias-light text-[42px] font-normal uppercase tracking-[-0.062em] text-bone-white">
+          Catalog
+        </h2>
+      </section>
+
+      {/* Product grid — feature cards with ash gray borders, 20px radius */}
+      <section className="mx-auto max-w-[1200px] px-6 pb-32">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {PRODUCTS.map((product) => (
             <div
               key={product.id}
-              className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition hover:border-zinc-600"
+              className="rounded-[20px] border border-ash-gray/40 bg-studio-charcoal p-6 transition hover:border-ash-gray"
             >
-              <div className="mb-4 text-5xl">{product.emoji}</div>
-              <h2 className="mb-1 text-lg font-semibold">{product.name}</h2>
-              <p className="mb-4 text-sm text-zinc-400">{product.description}</p>
+              <div className="mb-6 flex h-40 items-center justify-center rounded-[20px] bg-carbon/40">
+                <span className="text-5xl">{product.emoji}</span>
+              </div>
+              <h3 className="mb-2 font-gt-flexa text-[24px] font-normal text-bone-white">
+                {product.name}
+              </h3>
+              <p className="mb-6 font-times text-sm leading-[1.2] text-ash-gray">
+                {product.description}
+              </p>
               <div className="flex items-center justify-between">
-                <span className="text-xl font-bold text-emerald-400">
+                <span className="font-gt-flexa text-xl font-normal text-bone-white">
                   ${product.price.toFixed(2)}
                 </span>
                 <form action={addProduct}>
                   <input type="hidden" name="productId" value={product.id} />
                   <button
                     type="submit"
-                    className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-emerald-400"
+                    className="rounded-[20px] bg-ember-orange px-4 py-1 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90"
                   >
                     Add to Cart
                   </button>
@@ -72,7 +85,17 @@ export default async function HomePage() {
             </div>
           ))}
         </div>
-      </main>
+      </section>
+
+      {/* Footer — defined by gap, no borders */}
+      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
+        <p className="font-gt-flexa text-[42px] font-extralight leading-[1.2] text-bone-white">
+          QuantumStore
+        </p>
+        <p className="mt-4 font-times text-sm text-ash-gray">
+          Built with an AI agent. Verified with Kane CLI.
+        </p>
+      </footer>
     </div>
   );
 }

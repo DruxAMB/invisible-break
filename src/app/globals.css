@@ -1,26 +1,58 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Colors — Electronic Materials Office® */
+  --color-studio-charcoal: #202020;
+  --color-bone-white: #ffffff;
+  --color-ash-gray: #9d9d9d;
+  --color-mid-felt: #eaeaea;
+  --color-carbon: #000000;
+  --color-ember-orange: #f45500;
+  --color-lavender-link: #9e9eff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Typography — Font Families */
+  --font-gt-flexa: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-tobias-light: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-times: var(--font-source-serif), ui-serif, Georgia, "Times New Roman", serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Typography — Scale */
+  --text-body-sm: 16px;
+  --leading-body-sm: 1.2;
+  --text-subheading: 24px;
+  --leading-subheading: 1.2;
+  --text-subheading-lg: 26px;
+  --leading-subheading-lg: 1.2;
+  --text-subheading-xl: 28px;
+  --leading-subheading-xl: 1.2;
+  --text-heading-sm: 32px;
+  --leading-heading-sm: 1.2;
+  --tracking-heading-sm: -0.048em;
+  --text-heading: 42px;
+  --leading-heading: 1.2;
+  --tracking-heading: -0.062em;
+  --text-heading-lg: 68px;
+  --leading-heading-lg: 1.06;
+  --text-display: 86px;
+  --leading-display: 1;
+
+  /* Spacing */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-48: 48px;
+
+  /* Border Radius */
+  --radius-2xl: 16px;
+  --radius-2xl-2: 20px;
+
+  /* Shadows — only for CTAs */
+  --shadow-xl: rgba(245, 86, 0, 0.6) 0px 0px 30px 0px;
+  --shadow-xl-2: rgba(255, 255, 255, 0.3) 0px 0px 30px 0px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-studio-charcoal);
+  color: var(--color-bone-white);
+  font-family: var(--font-times);
 }

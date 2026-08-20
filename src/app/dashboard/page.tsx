@@ -96,52 +96,53 @@ export default function DashboardPage() {
   const bugVerdict = result?.bugVerdict;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+    <div className="min-h-screen bg-studio-charcoal text-bone-white">
+      {/* Navigation */}
+      <header className="px-6 py-6">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-xl font-bold tracking-tight">
-              Quantum<span className="text-emerald-400">Store</span>
+            <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
+              <span className="text-ember-orange">●</span> QuantumStore
             </Link>
-            <span className="text-zinc-600">/</span>
-            <span className="text-sm text-zinc-400">Invisible Break</span>
+            <span className="text-ash-gray">/</span>
+            <span className="font-gt-flexa text-sm text-ash-gray">Invisible Break</span>
           </div>
           <Link
             href="/"
-            className="rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+            className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
           >
             ← Store
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold tracking-tight">
-            Verification Dashboard
+      <main className="mx-auto max-w-[1200px] px-6 py-16">
+        {/* Hero */}
+        <div className="mb-16">
+          <h1 className="mb-4 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+            Verification
           </h1>
-          <p className="text-zinc-400">
+          <p className="max-w-lg font-times text-base leading-[1.2] text-ash-gray">
             Kane CLI runs flows with DevTools assertions — catching what screenshots miss.
           </p>
         </div>
 
         {/* Status bar */}
-        <div className="mb-8 flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+        <div className="mb-12 flex items-center justify-between rounded-[20px] border border-ash-gray/40 p-6">
           <div className="flex items-center gap-4">
             <div
-              className={`h-4 w-4 rounded-full ${
+              className={`h-3 w-3 rounded-full ${
                 isRunning
-                  ? "animate-pulse bg-amber-500"
+                  ? "animate-pulse bg-ember-orange"
                   : state.status === "passed"
-                  ? "bg-emerald-500"
+                  ? "bg-bone-white"
                   : state.status === "failed"
-                  ? "bg-red-500"
-                  : "bg-zinc-600"
+                  ? "bg-ember-orange"
+                  : "bg-ash-gray"
               }`}
             />
             <div>
-              <div className="font-medium">
+              <div className="font-gt-flexa text-base font-normal text-bone-white">
                 {isRunning
                   ? "Running verification..."
                   : state.status === "passed"
@@ -151,7 +152,7 @@ export default function DashboardPage() {
                   : "Idle — click Run to verify"}
               </div>
               {result && (
-                <div className="text-sm text-zinc-400">
+                <div className="font-times text-sm text-ash-gray">
                   Last run: {result.duration}s · {result.creditsConsumed.toFixed(2)} credits · {new Date(result.timestamp).toLocaleTimeString()}
                 </div>
               )}
@@ -160,39 +161,39 @@ export default function DashboardPage() {
           <button
             onClick={triggerRun}
             disabled={isRunning || polling}
-            className="rounded-lg bg-emerald-500 px-6 py-3 text-sm font-semibold text-black transition hover:bg-emerald-400 disabled:opacity-50"
+            className="rounded-[20px] bg-ember-orange px-6 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
           >
             {isRunning ? "Running..." : "Run Verification"}
           </button>
         </div>
 
         {error && (
-          <div className="mb-6 rounded-lg border border-red-800 bg-red-950/30 p-4 text-sm text-red-300">
+          <div className="mb-8 rounded-[20px] border border-ember-orange/40 px-6 py-4 font-times text-sm text-ember-orange">
             {error}
           </div>
         )}
 
         {/* Failure cards */}
         {hasFailures && bugVerdict && (
-          <div className="mb-8">
-            <h2 className="mb-4 text-lg font-semibold text-red-400">
-              ❌ Invisible Breaks Detected
+          <div className="mb-12">
+            <h2 className="mb-6 font-tobias-light text-[32px] font-normal uppercase tracking-[-0.048em] text-bone-white">
+              Invisible Breaks Detected
             </h2>
             <div className="space-y-4">
               {bugVerdict.signals.map((signal, i) => (
                 <div
                   key={i}
-                  className="rounded-xl border border-red-900/50 bg-red-950/20 p-6"
+                  className="rounded-[20px] border border-ash-gray/40 p-6"
                 >
-                  <div className="mb-2 flex items-center gap-3">
-                    <span className="rounded-md bg-red-900/50 px-2 py-1 text-xs font-mono text-red-300">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="rounded-[20px] border border-ember-orange/40 px-3 py-1 font-gt-flexa text-xs text-ember-orange">
                       {signal.type}
                     </span>
                     {signal.step && (
-                      <span className="text-xs text-zinc-500">step {signal.step}</span>
+                      <span className="font-times text-xs text-ash-gray">step {signal.step}</span>
                     )}
                   </div>
-                  <pre className="overflow-x-auto rounded-lg bg-black/50 p-4 text-sm text-red-200">
+                  <pre className="overflow-x-auto rounded-[20px] bg-carbon/40 p-4 font-times text-sm text-bone-white/80">
                     {signal.excerpt}
                   </pre>
                 </div>
@@ -200,46 +201,52 @@ export default function DashboardPage() {
             </div>
 
             {/* Bug verdict details */}
-            <div className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-              <h3 className="mb-3 font-semibold text-zinc-200">Bug Verdict</h3>
-              <div className="space-y-2 text-sm">
+            <div className="mt-8 rounded-[20px] border border-ash-gray/40 p-6">
+              <h3 className="mb-4 font-tobias-light text-[24px] font-normal tracking-[-0.048em] text-bone-white">
+                Bug Verdict
+              </h3>
+              <div className="space-y-3 font-times text-sm">
                 <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Title</span>
-                  <span>{bugVerdict.bug_title}</span>
+                  <span className="w-32 text-ash-gray">Title</span>
+                  <span className="text-bone-white">{bugVerdict.bug_title}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Category</span>
-                  <span>{bugVerdict.family} / {bugVerdict.category}</span>
+                  <span className="w-32 text-ash-gray">Category</span>
+                  <span className="text-bone-white">{bugVerdict.family} / {bugVerdict.category}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Severity</span>
-                  <span className="capitalize">{bugVerdict.severity}</span>
+                  <span className="w-32 text-ash-gray">Severity</span>
+                  <span className="capitalize text-bone-white">{bugVerdict.severity}</span>
                 </div>
                 <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Confidence</span>
-                  <span>{(bugVerdict.confidence * 100).toFixed(0)}%</span>
+                  <span className="w-32 text-ash-gray">Confidence</span>
+                  <span className="text-bone-white">{(bugVerdict.confidence * 100).toFixed(0)}%</span>
                 </div>
-                <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Root cause</span>
-                  <span className="flex-1">{bugVerdict.root_cause}</span>
-                </div>
-                <div className="flex gap-4">
-                  <span className="w-32 text-zinc-400">Suggestion</span>
-                  <span className="flex-1 text-emerald-400">{bugVerdict.suggestion}</span>
-                </div>
+                {bugVerdict.root_cause && (
+                  <div className="flex gap-4">
+                    <span className="w-32 text-ash-gray">Root cause</span>
+                    <span className="flex-1 text-bone-white">{bugVerdict.root_cause}</span>
+                  </div>
+                )}
+                {bugVerdict.suggestion && (
+                  <div className="flex gap-4">
+                    <span className="w-32 text-ash-gray">Suggestion</span>
+                    <span className="flex-1 text-lavender-link">{bugVerdict.suggestion}</span>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Agent action */}
-            <div className="mt-6 rounded-xl border border-emerald-800 bg-emerald-950/20 p-6">
-              <h3 className="mb-2 font-semibold text-emerald-400">
+            <div className="mt-8 rounded-[20px] border border-lavender-link/30 p-6">
+              <h3 className="mb-2 font-gt-flexa text-[24px] font-normal text-lavender-link">
                 → Send to Agent
               </h3>
-              <p className="mb-3 text-sm text-zinc-300">
+              <p className="mb-4 font-times text-sm text-ash-gray">
                 A structured failure report has been generated. The agent reads it,
                 patches the code, and saves — the watcher re-runs Kane automatically.
               </p>
-              <div className="rounded-lg bg-black/50 p-3 font-mono text-xs text-zinc-400">
+              <div className="rounded-[20px] bg-carbon/40 p-3 font-gt-flexa text-xs text-ash-gray">
                 watcher-output/failure.md ← agent reads this
               </div>
             </div>
@@ -248,15 +255,14 @@ export default function DashboardPage() {
 
         {/* Passed state */}
         {state.status === "passed" && result && (
-          <div className="rounded-xl border border-emerald-800 bg-emerald-950/20 p-8 text-center">
-            <div className="mb-4 text-5xl">✅</div>
-            <h2 className="mb-2 text-xl font-bold text-emerald-400">
+          <div className="rounded-[20px] border border-ash-gray/40 p-12 text-center">
+            <h2 className="mb-4 font-gt-flexa text-[42px] font-extralight leading-[1.2] text-bone-white">
               All Flows Verified
             </h2>
-            <p className="text-zinc-400">
+            <p className="font-times text-base text-ash-gray">
               No console errors. No 5xx responses. No invisible breaks.
             </p>
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-3 font-times text-sm text-ash-gray">
               Re-runs are free — this runs on every save without burning credits.
             </p>
           </div>
@@ -264,21 +270,31 @@ export default function DashboardPage() {
 
         {/* Step results */}
         {result && result.steps.length > 0 && (
-          <div className="mt-8">
-            <h2 className="mb-4 text-lg font-semibold">Step Results</h2>
+          <div className="mt-12">
+            <h2 className="mb-6 font-tobias-light text-[32px] font-normal uppercase tracking-[-0.048em] text-bone-white">
+              Step Results
+            </h2>
             <div className="space-y-2">
               {result.steps.map((step) => (
                 <div
                   key={step.index}
-                  className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3"
+                  className="flex items-center justify-between rounded-[20px] border border-ash-gray/40 px-6 py-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">
-                      {step.status === "passed" ? "✅" : step.status === "failed" ? "❌" : "⏭️"}
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        step.status === "passed"
+                          ? "bg-bone-white"
+                          : step.status === "failed"
+                          ? "bg-ember-orange"
+                          : "bg-ash-gray"
+                      }`}
+                    />
+                    <span className="font-gt-flexa text-sm text-bone-white">
+                      Step {step.index}: {step.heading}
                     </span>
-                    <span className="text-sm">Step {step.index}</span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-zinc-400">
+                  <div className="flex items-center gap-4 font-times text-sm text-ash-gray">
                     <span className="capitalize">{step.status}</span>
                     <span>{step.duration}s</span>
                   </div>
@@ -290,61 +306,75 @@ export default function DashboardPage() {
 
         {/* Links */}
         {result?.shareUrl && (
-          <div className="mt-8 text-center">
+          <div className="mt-8">
             <a
               href={result.shareUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-emerald-400 underline hover:text-emerald-300"
+              className="font-gt-flexa text-sm text-lavender-link hover:underline"
             >
               View on Kane Dashboard →
             </a>
           </div>
         )}
 
-        {/* Demo controls — toggle between broken and fixed states */}
-        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-          <h3 className="mb-3 text-sm font-semibold text-zinc-300">Demo: see the invisible breaks</h3>
-          <p className="mb-4 text-sm text-zinc-400">
+        {/* Demo controls */}
+        <div className="mt-16 rounded-[20px] border border-ash-gray/40 p-6">
+          <h3 className="mb-3 font-tobias-light text-[24px] font-normal tracking-[-0.048em] text-bone-white">
+            Demo: see the invisible breaks
+          </h3>
+          <p className="mb-6 font-times text-sm text-ash-gray">
             The checkout page looks identical in both states. The difference is invisible —
             console errors and 500 responses that only Kane CLI catches.
           </p>
           <div className="flex flex-wrap gap-3">
             <a
               href="/checkout?breaks=true"
-              className="rounded-lg border border-red-800 bg-red-950/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-950/50"
+              className="rounded-[20px] border border-ember-orange/40 px-4 py-2 font-gt-flexa text-sm text-ember-orange transition hover:bg-ember-orange/10"
             >
-              🔴 Broken checkout (breaks enabled)
+              Broken checkout (breaks enabled)
             </a>
             <a
               href="/checkout"
-              className="rounded-lg border border-emerald-800 bg-emerald-950/30 px-4 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-950/50"
+              className="rounded-[20px] border border-bone-white/40 px-4 py-2 font-gt-flexa text-sm text-bone-white transition hover:bg-bone-white/10"
             >
-              🟢 Fixed checkout (breaks resolved)
+              Fixed checkout (breaks resolved)
             </a>
           </div>
         </div>
 
         {/* Architecture diagram */}
-        <div className="mt-12 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-          <h3 className="mb-4 text-sm font-semibold text-zinc-300">How the loop works</h3>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-400">
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">📝 Code change</span>
+        <div className="mt-12 rounded-[20px] border border-ash-gray/40 p-6">
+          <h3 className="mb-6 font-tobias-light text-[24px] font-normal tracking-[-0.048em] text-bone-white">
+            How the loop works
+          </h3>
+          <div className="flex flex-wrap items-center gap-2 font-gt-flexa text-xs text-ash-gray">
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Code change</span>
             <span>→</span>
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">👁️ Watcher detects</span>
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Watcher detects</span>
             <span>→</span>
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">🧪 Kane runs flows</span>
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Kane runs flows</span>
             <span>→</span>
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">📋 failure.md generated</span>
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">failure.md generated</span>
             <span>→</span>
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">🤖 Agent reads + fixes</span>
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Agent reads + fixes</span>
             <span>→</span>
-            <span className="rounded-md bg-zinc-800 px-3 py-1.5">💾 Save triggers re-run</span>
+            <span className="rounded-[20px] border border-ash-gray/30 px-3 py-1.5">Save triggers re-run</span>
             <span>→</span>
-            <span className="rounded-md bg-emerald-900/50 px-3 py-1.5 text-emerald-400">✅ Green</span>
+            <span className="rounded-[20px] bg-ember-orange/20 border border-ember-orange/40 px-3 py-1.5 text-ember-orange">Green</span>
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-[1200px] px-6 pt-32 pb-16">
+        <p className="font-gt-flexa text-[42px] font-extralight leading-[1.2] text-bone-white">
+          QuantumStore
+        </p>
+        <p className="mt-4 font-times text-sm text-ash-gray">
+          Built with an AI agent. Verified with Kane CLI.
+        </p>
+      </footer>
     </div>
   );
 }

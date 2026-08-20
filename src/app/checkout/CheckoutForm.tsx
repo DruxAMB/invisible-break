@@ -16,13 +16,8 @@ export function CheckoutForm({
   const breaksEnabled = searchParams.get("breaks") === "true";
 
   // Feature flags: safely handle missing config.
-  // When breaks are enabled, this reproduces the original bug:
-  // accessing .featureFlags on undefined throws a console error.
-  // When breaks are disabled (the fixed state), optional chaining
-  // handles the missing config gracefully.
   useEffect(() => {
     if (!breaksEnabled) {
-      // Fixed state: safe access with optional chaining
       const config = (window as unknown as { __APP_CONFIG__?: { featureFlags?: { enableNewCheckout?: boolean } } }).__APP_CONFIG__;
       const featureFlags = config?.featureFlags;
       if (featureFlags?.enableNewCheckout) {
@@ -31,7 +26,6 @@ export function CheckoutForm({
       return;
     }
 
-    // Broken state: reproduces the original invisible break
     const logError = () => {
       // @ts-expect-error — simulating a missing config module
       const config = window.__APP_CONFIG__;
@@ -50,8 +44,6 @@ export function CheckoutForm({
   }, [breaksEnabled]);
 
   // Shipping rates: fetch on load.
-  // When breaks are enabled, the API endpoint returns 500.
-  // When breaks are disabled, the API returns a valid response.
   useEffect(() => {
     const url = breaksEnabled ? "/api/shipping-rates?broken=1" : "/api/shipping-rates";
     fetch(url)
@@ -67,7 +59,6 @@ export function CheckoutForm({
       });
 
     if (breaksEnabled) {
-      // Broken state: retry every 500ms to ensure the 500 is captured
       const interval = setInterval(() => {
         fetch(url).catch(() => setShippingRate(5.99));
       }, 500);
@@ -85,87 +76,89 @@ export function CheckoutForm({
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            Quantum<span className="text-emerald-400">Store</span>
+    <div className="min-h-screen bg-studio-charcoal text-bone-white">
+      {/* Navigation */}
+      <header className="px-6 py-6">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
+            <span className="text-ember-orange">●</span> QuantumStore
           </Link>
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
             >
-              🛡️ Verify
+              Verify
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-sm transition hover:border-zinc-500"
+              className="rounded-[20px] border border-lavender-link px-4 py-2 font-gt-flexa text-sm text-lavender-link transition hover:bg-lavender-link/10"
             >
-              🛒 Cart
+              Cart
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-6 py-12">
-        <h1 className="mb-8 text-3xl font-bold tracking-tight">Checkout</h1>
+      <main className="mx-auto max-w-[1200px] px-6 py-16">
+        <h1 className="mb-16 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          Checkout
+        </h1>
 
         {breaksEnabled && (
-          <div className="mb-6 rounded-lg border border-amber-800 bg-amber-950/30 px-4 py-3 text-sm text-amber-300">
-            ⚠️ <strong>Invisible breaks enabled.</strong> The page looks fine,
-            but Kane CLI will catch console errors and 500 responses.
-            Try the{" "}
-            <Link href="/checkout" className="underline hover:text-amber-200">
-              fixed version
+          <div className="mb-12 rounded-[20px] border border-ember-orange/40 px-6 py-4 font-times text-sm text-ember-orange">
+            Invisible breaks enabled. The page looks fine, but Kane CLI will catch
+            console errors and 500 responses.{" "}
+            <Link href="/checkout" className="text-lavender-link hover:underline">
+              Try the fixed version
             </Link>
             .
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="max-w-xl space-y-8">
           <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-300">
+            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
               Full Name
             </label>
             <input
               type="text"
               name="name"
               required
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 outline-none transition focus:border-emerald-500"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
               placeholder="Ada Lovelace"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-300">
+            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
               Email
             </label>
             <input
               type="email"
               name="email"
               required
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 outline-none transition focus:border-emerald-500"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
               placeholder="ada@analytical.engine"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-300">
+            <label className="mb-2 block font-gt-flexa text-sm font-normal text-ash-gray">
               Shipping Address
             </label>
             <textarea
               name="address"
               required
               rows={3}
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 outline-none transition focus:border-emerald-500"
+              className="w-full rounded-[20px] border border-ash-gray/40 bg-studio-charcoal px-4 py-3 font-times text-base text-bone-white outline-none transition focus:border-bone-white"
               placeholder="221B Baker Street, London, NW1 6XE"
             />
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3">
-            <span className="text-sm text-zinc-400">Shipping</span>
-            <span className="font-medium text-emerald-400">
+          <div className="flex items-center justify-between rounded-[20px] border border-ash-gray/40 px-6 py-4">
+            <span className="font-times text-sm text-ash-gray">Shipping</span>
+            <span className="font-gt-flexa text-base font-normal text-bone-white">
               {shippingRate !== null ? `$${shippingRate.toFixed(2)}` : "Calculating…"}
             </span>
           </div>
@@ -173,7 +166,7 @@ export function CheckoutForm({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-emerald-500 px-6 py-4 text-base font-semibold text-black transition hover:bg-emerald-400 disabled:opacity-50"
+            className="w-full rounded-[20px] bg-ember-orange px-6 py-2 font-gt-flexa text-base font-normal text-bone-white shadow-[0_0_30px_rgba(245,86,0,0.6)] transition hover:bg-ember-orange/90 disabled:opacity-40"
           >
             {submitting ? "Processing…" : "Complete Order"}
           </button>

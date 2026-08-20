@@ -18,45 +18,49 @@ export default async function ConfirmationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <header className="border-b border-zinc-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight">
-            Quantum<span className="text-emerald-400">Store</span>
+    <div className="min-h-screen bg-studio-charcoal text-bone-white">
+      {/* Navigation */}
+      <header className="px-6 py-6">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+          <Link href="/" className="font-gt-flexa text-base font-normal text-bone-white">
+            <span className="text-ember-orange">●</span> QuantumStore
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-6 py-16">
-        <div className="rounded-xl border border-emerald-800 bg-emerald-950/30 p-8 text-center">
-          <div className="mb-4 text-6xl">✅</div>
-          <h1 className="mb-2 text-2xl font-bold">Order Confirmed!</h1>
-          <p className="mb-6 text-zinc-400">
-            Thank you, {order.name}. Your order is on its way.
-          </p>
+      <main className="mx-auto max-w-[1200px] px-6 py-32">
+        <h1 className="mb-8 font-gt-flexa text-[68px] font-extralight leading-[1.06] text-bone-white">
+          Order Confirmed
+        </h1>
+        <p className="mb-16 max-w-md font-times text-base leading-[1.2] text-ash-gray">
+          Thank you, {order.name}. Your order is on its way.
+        </p>
 
-          <div className="mx-auto max-w-sm space-y-2 rounded-lg border border-zinc-800 bg-zinc-900 p-4 text-left text-sm">
-            <div className="flex justify-between">
-              <span className="text-zinc-400">Order ID</span>
-              <span className="font-mono text-emerald-400">{order.orderId}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-400">Email</span>
-              <span>{order.email}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-400">Ship to</span>
-              <span className="max-w-[200px] truncate">{order.address}</span>
-            </div>
+        <div className="max-w-md space-y-4 rounded-[20px] border border-ash-gray/40 p-6">
+          <div className="flex justify-between">
+            <span className="font-times text-sm text-ash-gray">Order ID</span>
+            <span className="font-gt-flexa text-sm font-normal text-lavender-link">
+              {order.orderId}
+            </span>
           </div>
-
-          <Link
-            href="/"
-            className="mt-8 inline-block rounded-lg border border-zinc-700 px-6 py-3 text-sm font-medium transition hover:border-zinc-500"
-          >
-            ← Back to Store
-          </Link>
+          <div className="flex justify-between">
+            <span className="font-times text-sm text-ash-gray">Email</span>
+            <span className="font-times text-sm text-bone-white">{order.email}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-times text-sm text-ash-gray">Ship to</span>
+            <span className="max-w-[200px] truncate font-times text-sm text-bone-white">
+              {order.address}
+            </span>
+          </div>
         </div>
+
+        <Link
+          href="/"
+          className="mt-12 inline-block rounded-[20px] border border-bone-white px-6 py-1.5 font-gt-flexa text-sm font-normal text-bone-white shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:bg-bone-white/10"
+        >
+          ← Back to Store
+        </Link>
       </main>
     </div>
   );
