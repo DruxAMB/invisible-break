@@ -13,7 +13,11 @@ export const metadata: Metadata = {
   description: "A demo store for the Kane CLI hackathon. Built with an AI agent, verified with Kane.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"

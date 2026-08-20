@@ -18,25 +18,25 @@ and PASS once the agent fixes them.
 
 ## Open the store
 Go to {{app_url}}.
-Assert the page shows "QuantumStore" and at least one product is visible.
+Assert the page shows "QuantumStore" and the hero product is visible.
 Assert no console errors on the page.
 
-## Add a product to the cart
-Click the "Add to Cart" button for the first product.
-Assert the page navigates to the cart page.
-Assert the cart shows at least one item.
+## Add the hero product to the cart
+Click the "BUY" button on the hero product.
+Assert the bag count in the header increases.
 Assert no console errors on the page.
 
-## Open the checkout page
-Go to {{app_url}}/checkout.
+## Open the bag and start checkout
+Click the "BAG" button in the header to open the slide-out cart panel.
+Assert the cart panel shows at least one item.
+Click the "CHECKOUT" button in the cart panel.
 Assert the checkout form is visible with fields for name, email, and address.
 Assert no console errors on the page.
 Assert no API calls returned 5xx status codes.
 
 ## Fill in and submit the checkout form
-Go to {{app_url}}/checkout.
 Type "Ada Lovelace" into the Full Name field.
 Type "ada@analytical.engine" into the Email field.
 Type "221B Baker Street, London" into the Shipping Address field.
-Click the "Complete Order" button.
-Assert the page shows "Order Confirmed".
+Click the "COMPLETE ORDER" button.
+Assert the page shows "ORDER CONFIRMED".

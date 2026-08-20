@@ -1,13 +1,18 @@
 import { PRODUCTS } from "@/lib/products";
-import { getCart, cartCount } from "@/lib/cart";
-import { addProduct } from "@/lib/actions";
+import { getCart, cartCount, cartTotal } from "@/lib/cart";
 import { LandingClient } from "./LandingClient";
 
 export default async function HomePage() {
   const cart = await getCart();
   const count = cartCount(cart);
+  const total = cartTotal(cart);
 
   return (
-    <LandingClient products={PRODUCTS} count={count} addProduct={addProduct} />
+    <LandingClient
+      products={PRODUCTS}
+      cart={cart}
+      initialCount={count}
+      initialTotal={total}
+    />
   );
 }
