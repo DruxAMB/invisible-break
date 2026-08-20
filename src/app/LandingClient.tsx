@@ -61,17 +61,18 @@ export function LandingClient({
         opacity: 0,
         y: -10,
         duration: 0.4,
+        clearProps: "opacity,transform",
       });
 
       tl.from(
         "[data-animate='nav']",
-        { opacity: 0, y: -10, duration: 0.5 },
+        { opacity: 0, y: -10, duration: 0.5, clearProps: "opacity,transform" },
         "-=0.1",
       );
 
       tl.from(
         "[data-animate='hero']",
-        { opacity: 0, scale: 0.98, duration: 0.6 },
+        { opacity: 0, scale: 0.98, duration: 0.6, clearProps: "opacity,transform" },
         "-=0.2",
       );
 
@@ -82,6 +83,7 @@ export function LandingClient({
           x: -20,
           duration: 0.4,
           stagger: 0.06,
+          clearProps: "opacity,transform",
         },
         "-=0.3",
       );
@@ -93,13 +95,14 @@ export function LandingClient({
           y: 30,
           duration: 0.5,
           stagger: 0.08,
+          clearProps: "opacity,transform",
         },
         "-=0.3",
       );
 
       tl.from(
         "[data-animate='footer']",
-        { opacity: 0, duration: 0.4 },
+        { opacity: 0, duration: 0.4, clearProps: "opacity,transform" },
         "-=0.2",
       );
     }, containerRef);
