@@ -8,6 +8,7 @@ import type { Product } from "@/lib/products";
 import type { Cart } from "@/lib/cart";
 import { addProduct, removeProduct, submitCheckout } from "@/lib/actions";
 import { ProductViewer } from "./ProductViewer";
+import { DashboardOverlay } from "./DashboardOverlay";
 
 type LandingClientProps = {
   products: Product[];
@@ -52,6 +53,7 @@ export function LandingClient({
   const [checkout, setCheckout] = useState<CheckoutState>({ phase: "idle" });
   const [, startTransition] = useTransition();
   const [shippingRate, setShippingRate] = useState<number | null>(null);
+  const [dashboardOpen, setDashboardOpen] = useState(false);
   const searchParams = useSearchParams();
 
   // If ?breaks=true is in the URL, auto-open cart with breaks enabled
@@ -64,6 +66,9 @@ export function LandingClient({
       }
       setCartState((prev) => ({ ...prev, open: true }));
       setCheckout({ phase: "form", breaksEnabled: true });
+    }
+    if (searchParams.get("dashboard") === "true") {
+      setDashboardOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -275,12 +280,12 @@ export function LandingClient({
             ✚ QuantumStore
           </Link>
           <div className="flex items-center gap-2">
-            <Link
-              href="/dashboard"
+            <button
+              onClick={() => setDashboardOpen(true)}
               className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
             >
               VERIFY
-            </Link>
+            </button>
             <button
               onClick={() => setCartState((prev) => ({ ...prev, open: true }))}
               className="rounded-[6px] border border-ink-black px-3 py-1 text-[14px] font-bold leading-[1.43] text-ink-black transition hover:bg-ink-black hover:text-arcade-cream"
@@ -537,12 +542,12 @@ export function LandingClient({
                     <p className="text-[14px] font-normal leading-[1.43] text-ink-black">
                       Screenshots and visual testing miss these. Kane CLI catches them.
                     </p>
-                    <a
-                      href="/dashboard"
+                    <button
+                      onClick={() => setDashboardOpen(true)}
                       className="block rounded-[6px] bg-buy-green px-3 py-2 text-center text-[14px] font-bold uppercase leading-[1.43] text-white shadow-[inset_0_1px_0_0_#f3e5df] transition hover:bg-buy-green/90"
                     >
                       → SEE KANE CLI CATCH THEM
-                    </a>
+                    </button>
                     <p className="text-[10px] font-normal leading-[1.5] text-muted-gray">
                       Or open DevTools Console to see the errors yourself.
                     </p>
@@ -660,6 +665,18 @@ export function LandingClient({
           </div>
         </>
       )}
+      {/* === DASHBOARD OVERLAY === */}
+      <DashboardOverlay
+        open={dashboardOpen}
+        onClose={() => setDashboardOpen(false)}
+        onTryBreaks={() => {
+          if (cartState.items.length === 0) {
+            handleAddToCart(products[0].id);
+          }
+          setCartState((prev) => ({ ...prev, open: true }));
+          setCheckout({ phase: "form", breaksEnabled: true });
+        }}
+      />
     </div>
   );
 }
