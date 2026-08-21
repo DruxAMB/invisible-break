@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import gsap from "gsap";
 
 type WatcherState = {
   status: "idle" | "running" | "passed" | "failed";
@@ -64,6 +65,14 @@ export function DashboardOverlay({
   const [polling, setPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // GSAP refs
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const crtRef = useRef<HTMLDivElement>(null);
+  const scanlineRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const statusDotRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
   const fetchStatus = useCallback(async () => {
     try {
       const resp = await fetch("/api/watcher/status");
@@ -82,6 +91,91 @@ export function DashboardOverlay({
     const interval = setInterval(fetchStatus, 2000);
     return () => clearInterval(interval);
   }, [open, fetchStatus]);
+
+  // CRT power-on boot animation
+  useEffect(() => {
+    if (!open) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      // 1. CRT power-on — overlay starts as a thin line, snaps open
+      if (overlayRef.current) {
+        gsap.set(overlayRef.current, {
+          scaleY: 0.005,
+          scaleX: 1,
+          transformOrigin: "center center",
+          opacity: 1,
+        });
+        tl.to(overlayRef.current, {
+          scaleY: 1,
+          duration: 0.35,
+          ease: "power4.out",
+        });
+      }
+
+      // 2. CRT flash — brief brightness overlay
+      if (crtRef.current) {
+        gsap.set(crtRef.current, { opacity: 0.8 });
+        tl.to(crtRef.current, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        }, 0.3);
+      }
+
+      // 3. Scanline sweep — horizontal line top to bottom
+      if (scanlineRef.current) {
+        gsap.set(scanlineRef.current, {
+          top: "0%",
+          opacity: 1,
+        });
+        tl.to(scanlineRef.current, {
+          top: "100%",
+          duration: 0.6,
+          ease: "power1.inOut",
+        }, 0.35);
+      }
+
+      // 4. Header glitch-in
+      if (headerRef.current) {
+        gsap.set(headerRef.current, { opacity: 0, x: -10 });
+        tl.to(headerRef.current, {
+          opacity: 1,
+          x: 0,
+          duration: 0.2,
+          ease: "steps(3)",
+        }, 0.5);
+      }
+
+      // 5. Content sections stagger up with glitch
+      if (contentRef.current) {
+        const sections = contentRef.current.querySelectorAll("[data-boot]");
+        gsap.set(sections, { opacity: 0, y: 20, x: 0 });
+        tl.to(sections, {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          duration: 0.35,
+          stagger: 0.06,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        }, 0.55);
+      }
+
+      // 6. Status dot slam-in with bounce
+      if (statusDotRef.current) {
+        gsap.set(statusDotRef.current, { scale: 0, transformOrigin: "center" });
+        tl.to(statusDotRef.current, {
+          scale: 1,
+          duration: 0.4,
+          ease: "back.out(3)",
+        }, 0.8);
+      }
+    });
+
+    return () => ctx.revert();
+  }, [open]);
 
   const triggerRun = async () => {
     setError(null);
@@ -114,9 +208,24 @@ export function DashboardOverlay({
       />
 
       {/* Full-screen overlay panel */}
-      <div className="fixed inset-0 z-[70] flex flex-col bg-arcade-cream font-arcade">
+      <div
+        ref={overlayRef}
+        className="fixed inset-0 z-[70] flex flex-col bg-arcade-cream font-arcade"
+      >
+        {/* CRT flash overlay — brief white flash on boot */}
+        <div
+          ref={crtRef}
+          className="pointer-events-none fixed inset-0 z-[80] bg-white"
+        />
+
+        {/* Scanline — sweeps top to bottom on boot */}
+        <div
+          ref={scanlineRef}
+          className="pointer-events-none fixed left-0 right-0 z-[79] h-[2px] bg-ink-black/60"
+        />
+
         {/* Header with close button */}
-        <header className="border-b border-ink-black bg-arcade-cream px-6 py-3">
+        <header ref={headerRef} className="border-b border-ink-black bg-arcade-cream px-6 py-3">
           <div className="mx-auto flex max-w-[1200px] items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-[18px] font-bold leading-[1.56] text-ink-black">
@@ -137,19 +246,22 @@ export function DashboardOverlay({
         </header>
 
         {/* Scrollable content */}
-        <main className="mx-auto w-full max-w-[1200px] flex-1 overflow-y-auto px-6 py-[44px]">
+        <main ref={contentRef} className="mx-auto w-full max-w-[1200px] flex-1 overflow-y-auto px-6 py-[44px]">
           {/* Title */}
+          <div data-boot>
           <h1 className="mb-2 text-[18px] font-bold leading-[1.56] text-ink-black">
             VERIFICATION
           </h1>
           <p className="mb-[44px] max-w-lg text-[16px] font-normal leading-[1.5] text-ink-black">
             Kane CLI runs flows with DevTools assertions — catching what screenshots miss.
           </p>
+          </div>
 
           {/* Status bar */}
-          <div className="mb-[44px] flex items-center justify-between rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <div data-boot className="mb-[44px] flex items-center justify-between rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
             <div className="flex items-center gap-3">
               <div
+                ref={statusDotRef}
                 className={`h-3 w-3 ${
                   isRunning
                     ? "animate-pulse bg-marquee-orange"
@@ -194,7 +306,7 @@ export function DashboardOverlay({
 
           {/* Failure cards */}
           {hasFailures && bugVerdict && (
-            <div className="mb-[44px]">
+            <div data-boot className="mb-[44px]">
               <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
                 INVISIBLE BREAKS DETECTED
               </h2>
@@ -276,7 +388,7 @@ export function DashboardOverlay({
 
           {/* Passed state */}
           {state.status === "passed" && result && (
-            <div className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-6">
+            <div data-boot className="rounded-[12px] border border-pixel-gray bg-arcade-cream p-6">
               <h2 className="mb-3 text-[18px] font-bold leading-[1.56] text-ink-black">
                 ALL FLOWS VERIFIED
               </h2>
@@ -291,7 +403,7 @@ export function DashboardOverlay({
 
           {/* Step results */}
           {result && result.steps.length > 0 && (
-            <div className="mt-[44px]">
+            <div data-boot className="mt-[44px]">
               <h2 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
                 STEP RESULTS
               </h2>
@@ -340,7 +452,7 @@ export function DashboardOverlay({
           )}
 
           {/* Demo controls */}
-          <div className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <div data-boot className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
             <h3 className="mb-2 text-[18px] font-bold leading-[1.56] text-ink-black">
               DEMO
             </h3>
@@ -362,7 +474,7 @@ export function DashboardOverlay({
           </div>
 
           {/* Architecture diagram */}
-          <div className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
+          <div data-boot className="mt-[44px] rounded-[12px] border border-pixel-gray bg-arcade-cream p-3">
             <h3 className="mb-4 text-[18px] font-bold leading-[1.56] text-ink-black">
               HOW THE LOOP WORKS
             </h3>
