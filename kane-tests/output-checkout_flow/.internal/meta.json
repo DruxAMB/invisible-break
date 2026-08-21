@@ -8,11 +8,81 @@
   "session_name": "checkout_flow",
   "executions": [
     {
-      "execution_id": "c7e1370e-e266-4214-bae0-264db35cb3e7",
+      "execution_id": "00919e45-ebbd-4386-b53b-3d5b2916c8ed",
       "run_kind": "author",
-      "status": "failed",
+      "status": "passed",
       "valid": true,
-      "at": "2026-08-19T22:36:04.909Z"
+      "at": "2026-08-21T00:57:34.767Z"
+    },
+    {
+      "execution_id": "9fe8250d-187a-4d80-ad3a-97dbf857aec3",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:11:35.856Z"
+    },
+    {
+      "execution_id": "b25e7537-3fd4-42cd-9ba2-df15f72fde87",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:11:57.572Z"
+    },
+    {
+      "execution_id": "fd15fb7c-36b1-4fee-b6f2-f6cc4e4b9d36",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-08-21T01:18:01.245Z"
+    },
+    {
+      "execution_id": "7987f116-2391-41b4-84a7-a8785e8415c9",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:20:24.594Z"
+    },
+    {
+      "execution_id": "f416a4a6-473b-45bd-a172-af1527b61a0f",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:21:08.902Z"
+    },
+    {
+      "execution_id": "1770bbfb-5bde-4ceb-bc8b-7c591c203269",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-08-21T01:22:10.192Z"
+    },
+    {
+      "execution_id": "0dcaa1da-87e5-4eb6-bb4d-280e2eb9766a",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:38:22.897Z"
+    },
+    {
+      "execution_id": "6154eab5-b3fc-4655-b0f7-93b4fa34052a",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-08-21T01:41:12.445Z"
+    },
+    {
+      "execution_id": "286ae6eb-132f-4b97-bf4b-1084bfbb48ce",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-08-21T01:43:30.284Z"
+    },
+    {
+      "execution_id": "6a7c3dfd-589e-4bc7-a2b8-3895f499b3b2",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-08-21T01:45:57.493Z"
     }
   ]
 }

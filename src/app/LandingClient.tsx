@@ -349,7 +349,7 @@ export function LandingClient({
       <section
         data-animate="hero"
         className="mx-auto mt-[44px] w-full max-w-[1200px] px-6"
-      >
+      > 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[55%_1fr]">
           {/* Left — local 3D viewer (Three.js + react-three-fiber) */}
           <div className="relative h-[400px] overflow-hidden rounded-[12px] border border-ink-black bg-arcade-cream">
