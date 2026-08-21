@@ -62,3 +62,30 @@ body {
 .marquee-sheen {
   background: linear-gradient(to right, #faa21f, #fef3c7, #faa21f);
 }
+
+/* Scrollbars — blocky, pixelated, arcade aesthetic */
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #f3e5df;
+  border-left: 1px solid #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border: 2px solid #f3e5df;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #faa21f;
+}
+::-webkit-scrollbar-corner {
+  background: #f3e5df;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #000 #f3e5df;
+}
