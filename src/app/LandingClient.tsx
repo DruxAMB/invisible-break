@@ -55,6 +55,8 @@ export function LandingClient({
   const [shippingRate, setShippingRate] = useState<number | null>(null);
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const searchParams = useSearchParams();
+  const crtFlashRef = useRef<HTMLDivElement>(null);
+  const crtScanlineRef = useRef<HTMLDivElement>(null);
 
   // If ?breaks=true is in the URL, auto-open cart with breaks enabled
   // so dashboard "BROKEN CHECKOUT" link works
@@ -73,28 +75,63 @@ export function LandingClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  // GSAP entrance animations
+  // GSAP entrance animations — CRT power-on boot
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
+      // 1. CRT power-on — container starts as thin line, snaps open
+      if (containerRef.current) {
+        gsap.set(containerRef.current, {
+          scaleY: 0.005,
+          transformOrigin: "center center",
+          opacity: 1,
+        });
+        tl.to(containerRef.current, {
+          scaleY: 1,
+          duration: 0.35,
+          ease: "power4.out",
+        });
+      }
+
+      // 2. CRT flash — brief white overlay fades out
+      if (crtFlashRef.current) {
+        gsap.set(crtFlashRef.current, { opacity: 0.8 });
+        tl.to(crtFlashRef.current, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        }, 0.3);
+      }
+
+      // 3. Scanline sweep — top to bottom
+      if (crtScanlineRef.current) {
+        gsap.set(crtScanlineRef.current, { top: "0%", opacity: 1 });
+        tl.to(crtScanlineRef.current, {
+          top: "100%",
+          duration: 0.6,
+          ease: "power1.inOut",
+        }, 0.35);
+      }
+
+      // 4. Content sections stagger in
       tl.from("[data-animate='marquee']", {
         opacity: 0,
         y: -10,
-        duration: 0.4,
+        duration: 0.3,
         clearProps: "opacity,transform",
-      });
+      }, 0.5);
 
       tl.from(
         "[data-animate='nav']",
-        { opacity: 0, y: -10, duration: 0.5, clearProps: "opacity,transform" },
-        "-=0.1",
+        { opacity: 0, x: -10, duration: 0.25, ease: "steps(3)", clearProps: "opacity,transform" },
+        0.55,
       );
 
       tl.from(
         "[data-animate='hero']",
-        { opacity: 0, scale: 0.98, duration: 0.6, clearProps: "opacity,transform" },
-        "-=0.2",
+        { opacity: 0, scale: 0.98, duration: 0.5, clearProps: "opacity,transform" },
+        0.6,
       );
 
       tl.from(
@@ -102,11 +139,11 @@ export function LandingClient({
         {
           opacity: 0,
           x: -20,
-          duration: 0.4,
+          duration: 0.35,
           stagger: 0.06,
           clearProps: "opacity,transform",
         },
-        "-=0.3",
+        0.7,
       );
 
       tl.from(
@@ -114,17 +151,17 @@ export function LandingClient({
         {
           opacity: 0,
           y: 30,
-          duration: 0.5,
+          duration: 0.4,
           stagger: 0.08,
           clearProps: "opacity,transform",
         },
-        "-=0.3",
+        0.75,
       );
 
       tl.from(
         "[data-animate='footer']",
-        { opacity: 0, duration: 0.4, clearProps: "opacity,transform" },
-        "-=0.2",
+        { opacity: 0, duration: 0.3, clearProps: "opacity,transform" },
+        0.85,
       );
     }, containerRef);
 
@@ -257,6 +294,18 @@ export function LandingClient({
       ref={containerRef}
       className="flex min-h-screen flex-col bg-arcade-cream text-ink-black font-arcade"
     >
+      {/* CRT flash overlay — brief white flash on boot */}
+      <div
+        ref={crtFlashRef}
+        className="pointer-events-none fixed inset-0 z-[90] bg-white"
+      />
+
+      {/* CRT scanline — sweeps top to bottom on boot */}
+      <div
+        ref={crtScanlineRef}
+        className="pointer-events-none fixed left-0 right-0 z-[89] h-[2px] bg-ink-black/60"
+      />
+
       {/* Marquee Announcement Bar */}
       <div
         data-animate="marquee"
