@@ -7,6 +7,10 @@
 [![Verified with Kane CLI](https://img.shields.io/badge/Verified-Kane_CLI-black)](https://kane.ai)
 [![Built by DruxAMB](https://img.shields.io/badge/Built_by-DruxAMB-128e44)](https://druxamb.dev)
 
+![Invisible Break Demo](public/hero.gif)
+
+**Live:** [invisible-break.druxamb.dev](https://invisible-break.druxamb.dev) · **Demo Video:** [YouTube](https://www.youtube.com/watch?v=75YiS1YXzW8)
+
 Built for the **Kane CLI Online Hackathon**. This project demonstrates a **closed-loop** interaction between an AI coding agent and Kane CLI: the agent writes code, Kane verifies it with DevTools assertions (console errors, 5xx network errors), and the watcher feeds failures back to the agent for fixing — automatically, on every save.
 
 ---

@@ -8,11 +8,18 @@
   "session_name": "checkout_flow",
   "executions": [
     {
-      "execution_id": "c7e1370e-e266-4214-bae0-264db35cb3e7",
+      "execution_id": "f30e05d2-32fb-439c-bcdc-ed5395273bce",
       "run_kind": "author",
-      "status": "failed",
+      "status": "passed",
       "valid": true,
-      "at": "2026-08-19T22:36:04.909Z"
+      "at": "2026-08-21T14:45:36.597Z"
+    },
+    {
+      "execution_id": "63902b81-62c8-4186-b0d0-105fdf543e46",
+      "run_kind": "replay",
+      "status": "broken",
+      "valid": true,
+      "at": "2026-08-21T15:51:54.374Z"
     }
   ]
 }
